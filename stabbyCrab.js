@@ -32,7 +32,18 @@ for (var i = 0; i < 100; i += 1) {
 
   //console.log(tileSpan.innerText);
   gameBoard.appendChild(tileSpan);
-  tileArray.push(tileSpan);
+  tileArray.push(tileSpan.innerText);
+  activateTile(tileSpan, i);
+}
+
+// adds event listener to the tile, which, upon a click,
+// pushes the address of the tile in tileArray to
+// player.move array:
+function activateTile(tile, index) {
+  tile.addEventListener("click", function(event) {
+    player.move.push(index);
+    console.log("tile was clicked, tileArray index: " + index);
+  });
 }
 
 // creates a randomly generated color for a tile
@@ -87,9 +98,6 @@ function gamePlay() {
   var p2HealthDiv = document.querySelector(".player");
   p2HealthDiv.classList.add("playerColor");
 
-  // add event listeners to each game tile:
-  activateTiles();
-
   // sets players' health to max:
   computer.health = 10;
   player.health = 10;
@@ -98,14 +106,18 @@ function gamePlay() {
   alert("Player - make your move!");
 
   // listen for 2 clicked tiles and act accordingly:
-
+  //if player clicked two tiles,
+  //if (player.move.length === 2) {
+    // check to see if tiles are adjacent:
+    //player.move = player.move.sort
+    //console.log("sorted player move array: " + player.move);
+  //}
 
 }
 
-function activateTiles() {
-  
-}
 
+//test:
+//console.log("tileArray contains: " + tileArray);
 
 
 gamePlay();
