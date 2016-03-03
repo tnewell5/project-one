@@ -40,18 +40,18 @@
   border: 1px solid black;
 }
 
-#player1 {
+#computer {
   height: 50px;
   width: 50px;
   border: 1px solid black;
-  margin: 30px 0 30px 0;
+  margin: 20px;
 }
 
-#player2 {
+#player {
   height: 50px;
   width: 50px;
   border: 1px solid black;
-  margin: 30px 0 30px 0;
+  margin: 20px;
 }
 
 .gameBoard {
@@ -85,4 +85,12 @@
 
 .purple {
   background-color: slateblue;
+}
+
+.computerColor {
+  background-color: tomato;
+}
+
+.playerColor {
+  background-color: skyblue;
 }
