@@ -42,8 +42,11 @@ for (var i = 0; i < 100; i += 1) {
 function activateTile(tile, index) {
   tile.addEventListener("click", function(event) {
     player.move.push(index);
+    player.move = player.move.sort();
     console.log("tile was clicked, tileArray index: " + index);
+    console.log(player.move);
   });
+
 }
 
 // creates a randomly generated color for a tile
@@ -91,7 +94,7 @@ var player = {
 // if there is no match of at least 3 adjacent tiles,
 // undo the swap and ask player to swap again
 
-function gamePlay() {
+function gameInitialize() {
   // fills players' health bars with colors:
   var p1HealthDiv = document.querySelector(".computer");
   p1HealthDiv.classList.add("computerColor");
@@ -101,23 +104,20 @@ function gamePlay() {
   // sets players' health to max:
   computer.health = 10;
   player.health = 10;
+}
 
+function gamePlay() {
   // ask player1 to make a move:
   alert("Player - make your move!");
 
   // listen for 2 clicked tiles and act accordingly:
   //if player clicked two tiles,
-  //if (player.move.length === 2) {
+  if (player.move.length === 2) {
     // check to see if tiles are adjacent:
     //player.move = player.move.sort
-    //console.log("sorted player move array: " + player.move);
-  //}
-
+    console.log("working");
+  }
 }
 
-
-//test:
-//console.log("tileArray contains: " + tileArray);
-
-
+gameInitialize();
 gamePlay();
