@@ -175,11 +175,20 @@ function tileSwap() {
     tileArray[player.move[0]] = tileArray[player.move[1]];
     tileArray[player.move[1]] = temp;
     // display the swapped tiles on the board:
-
-    //console.log(tileArray);
-
     recreateBoard();
+    // see if there is a match of blue or red color tiles,
+    // if there are 3 or more adjacent tiles of the same color:
+    // check if there are 3 or more adjacent red tiles:
+    // interate over tileArray values and once find and "R",
+    // check if R's index plus 1 and R's index plus 10 values are
+    // also value "R".
+    for (var m = 0; m < tileArray.length; m +=1) {
+      if (tileArray[m] === "R" && tileArray[m+1] === "R" && tileArray[m+2] === "R") {
+        console.log(m + "index is Red and has a horizonal match");
+      } 
 
+
+    }
   }
   else {
     console.log("cards are not adjacent");
