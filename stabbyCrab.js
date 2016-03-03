@@ -4,36 +4,43 @@ console.log("js window has loaded");
 var gameBoard = document.querySelector(".gameBoard");
 var tileSpan;
 var tileArray = [];
+var message = document.querySelector(".message");
 
 // game board creation:
-for (var i = 0; i < 100; i += 1) {
-  tileSpan = document.createElement('span');
-  tileSpan.innerText = tileColorCreation();
-  if (tileSpan.innerText === "R") {
-    tileSpan.classList.add("red");
-    tileSpan.classList.add("tile");
-  }
-  else if (tileSpan.innerText === "B") {
-    tileSpan.classList.add("blue");
-    tileSpan.classList.add("tile");
-  }
-  else if (tileSpan.innerText === "G") {
-    tileSpan.classList.add("green");
-    tileSpan.classList.add("tile");
-  }
-  else if (tileSpan.innerText === "Y") {
-    tileSpan.classList.add("yellow");
-    tileSpan.classList.add("tile");
-  }
-  else if (tileSpan.innerText === "P") {
-    tileSpan.classList.add("purple");
-    tileSpan.classList.add("tile");
-  }
+function populateBoard() {
+  for (var i = 0; i < 100; i += 1) {
+    tileSpan = document.createElement('span');
+    tileSpan.innerText = tileColorCreation();
+    if (tileSpan.innerText === "R") {
+      tileSpan.classList.add("red");
+      tileSpan.classList.add("tile");
+    }
+    else if (tileSpan.innerText === "B") {
+      tileSpan.classList.add("blue");
+      tileSpan.classList.add("tile");
+    }
+    else if (tileSpan.innerText === "G") {
+      tileSpan.classList.add("green");
+      tileSpan.classList.add("tile");
+    }
+    else if (tileSpan.innerText === "Y") {
+      tileSpan.classList.add("yellow");
+      tileSpan.classList.add("tile");
+    }
+    else if (tileSpan.innerText === "P") {
+      tileSpan.classList.add("purple");
+      tileSpan.classList.add("tile");
+    }
+    else if (tileSpan.innerText === "O") {
+      tileSpan.classList.add("orange");
+      tileSpan.classList.add("tile");
+    }
 
-  //console.log(tileSpan.innerText);
-  gameBoard.appendChild(tileSpan);
-  tileArray.push(tileSpan.innerText);
-  activateTile(tileSpan, i);
+    //console.log(tileSpan.innerText);
+    gameBoard.appendChild(tileSpan);
+    tileArray.push(tileSpan.innerText);
+    activateTile(tileSpan, i);
+  }
 }
 
 // adds event listener to the tile, which, upon a click,
@@ -42,9 +49,11 @@ for (var i = 0; i < 100; i += 1) {
 function activateTile(tile, index) {
   tile.addEventListener("click", function(event) {
     player.move.push(index);
+    // the following sort does not always work - why?
     player.move = player.move.sort();
     console.log("tile was clicked, tileArray index: " + index);
     console.log(player.move);
+    if (player.move.length === 2) {tileSwap();}
   });
 
 }
@@ -53,13 +62,54 @@ function activateTile(tile, index) {
 //(Red, Blue, Greeen, or Yellow):
 function tileColorCreation() {
   //function taken from Mozilla Developer Network:
-  var randomNum = Math.floor(Math.random() * (6 - 1)) + 1;
+  var randomNum = Math.floor(Math.random() * (7 - 1)) + 1;
 
   if (randomNum === 1) {return "R";}
   else if (randomNum === 2) {return "B";}
   else if (randomNum === 3) {return "G";}
   else if (randomNum === 4) {return "Y";}
-  else {return "P";}
+  else if (randomNum === 5) {return "P";}
+  else {return "O";}
+}
+
+//re-create board based on current tileArray:
+function recreateBoard() {
+  var tileSpanArray = gameBoard.querySelectorAll('.tile');
+  for (var j = 0; j < 100; j += 1) {
+    tileSpanArray[j].innerText = tileArray[j];
+
+    //tileSpan.innerText = tileColorCreation();
+    if (tileSpanArray[j].innerText === "R") {
+      tileSpanArray[j].className = "tile";
+      tileSpanArray[j].classList.add("red");
+
+    }
+    else if (tileSpanArray[j].innerText === "B") {
+      tileSpanArray[j].className = "tile";
+      tileSpanArray[j].classList.add("blue");
+    }
+    else if (tileSpanArray[j].innerText === "G") {
+      tileSpanArray[j].className = "tile";
+      tileSpanArray[j].classList.add("green");
+    }
+    else if (tileSpanArray[j].innerText === "Y") {
+      tileSpanArray[j].className = "tile";
+      tileSpanArray[j].classList.add("yellow");
+    }
+    else if (tileSpanArray[j].innerText === "P") {
+      tileSpanArray[j].className = "tile";
+      tileSpanArray[j].classList.add("purple");
+    }
+    else if (tileSpanArray[j].innerText === "O") {
+      tileSpanArray[j].className = "tile";
+      tileSpanArray[j].classList.add("orange");
+    }
+
+    gameBoard.appendChild(tileSpanArray[j]);
+
+    //activateTile(tileSpan, i);
+  }
+  //console.log(tileSpanArray);
 }
 
 var computer = {
@@ -104,20 +154,42 @@ function gameInitialize() {
   // sets players' health to max:
   computer.health = 10;
   player.health = 10;
+
 }
 
-function gamePlay() {
+function makeMove() {
   // ask player1 to make a move:
-  alert("Player - make your move!");
+  //alert("Player - make your move!");
+  message.innerText = "Player - make your move!";
 
-  // listen for 2 clicked tiles and act accordingly:
-  //if player clicked two tiles,
-  if (player.move.length === 2) {
-    // check to see if tiles are adjacent:
-    //player.move = player.move.sort
-    console.log("working");
-  }
 }
 
+function tileSwap() {
+  //console.log("work here");
+  // check to see if tiles are adjacent:
+  if (player.move[1] - player.move[0] === 1 || player.move[1] - player.move[0] === 10) {
+    console.log("cards are adjacent");
+    message.innerText = "Computer makes a move";
+    // swap color values in tileArray
+    var temp = tileArray[player.move[0]];
+    tileArray[player.move[0]] = tileArray[player.move[1]];
+    tileArray[player.move[1]] = temp;
+    // display the swapped tiles on the board:
+
+    //console.log(tileArray);
+
+    recreateBoard();
+
+  }
+  else {
+    console.log("cards are not adjacent");
+    // alert user to re-pick adjacent tiles
+    message.innerText = "Please choose two adjacent tiles!";
+  }
+
+
+}
+
+populateBoard();
 gameInitialize();
-gamePlay();
+makeMove();

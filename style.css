@@ -35,23 +35,27 @@
 }
 
 .health {
-  height: 20px;
+  height: 15px;
   width: 100px;
   border: 1px solid black;
 }
 
 #computer {
-  height: 50px;
-  width: 50px;
+  height: 75px;
+  width: 100px;
   border: 1px solid black;
   margin: 20px;
 }
 
 #player {
-  height: 50px;
-  width: 50px;
+  height: 75px;
+  width: 100px;
   border: 1px solid black;
   margin: 20px;
+}
+
+.crab {
+  width: 100px;
 }
 
 .gameBoard {
@@ -85,6 +89,10 @@
 
 .purple {
   background-color: slateblue;
+}
+
+.orange {
+  background-color: orange;
 }
 
 .computerColor {
