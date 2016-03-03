@@ -23,6 +23,10 @@ for (var i = 0; i < 100; i += 1) {
     tileSpan.classList.add("yellow");
     tileSpan.classList.add("tile");
   }
+  else if (tileSpan.innerText === "P") {
+    tileSpan.classList.add("purple");
+    tileSpan.classList.add("tile");
+  }
 
 
   //console.log(tileSpan.innerText);
@@ -33,11 +37,12 @@ for (var i = 0; i < 100; i += 1) {
 // creates a randomly generated color for a tile (Red, Blue, Greeen, or Yellow):
 function tileColorCreation() {
   //function taken from Mozilla Developer Network:
-  var randomNum = Math.floor(Math.random() * (5 - 1)) + 1;
+  var randomNum = Math.floor(Math.random() * (6 - 1)) + 1;
 
   if (randomNum === 1) {return "R";}
   else if (randomNum === 2) {return "B";}
   else if (randomNum === 3) {return "G";}
-  else {return "Y";}
+  else if (randomNum === 4) {return "Y";}
+  else {return "P";}
 
 }

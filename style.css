@@ -11,7 +11,7 @@
   /*flex-direction: column;*/
   height: 200px;
   width: 800px;
-  background-color: lightpink;
+  background-color: lightgray;
 }
 
 .two {
@@ -27,11 +27,11 @@
   /*flex-direction: column;*/
   height: 200px;
   width: 800px;
-  background-color: lightblue;
+  background-color: lightgray;
 }
 
 .body {
-  background-color: red;
+  /*background-color: red;*/
 }
 
 .health {
@@ -81,4 +81,8 @@
 
 .yellow {
   background-color: khaki;
+}
+
+.purple {
+  background-color: slateblue;
 }
