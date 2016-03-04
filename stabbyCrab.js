@@ -268,29 +268,47 @@ function makeMoveComputer() {
   var swapBottomMove = false;
   var validMove = false;
 
-  //console.log("current tileArray: " + tileArray);
-  for (var i = 0; i < tileArray.length; i +=1) {
-    //console.log("we got to the B condition");
-    if (tileArray[i] === "B") {
+  //creates 4 temp. arrays that are identical to the tileArray:
+  for (var s = 0; s < tileArray.length; s += 1) {
+    tempTileArrayLeft.push(tileArray[s]);
+    tempTileArrayRight.push(tileArray[s]);
+    tempTileArrayTop.push(tileArray[s]);
+    tempTileArrayBottom.push(tileArray[s]);
+  }
 
-      //console.log("we found a B");
+  //console.log("tempTileArrayTop: " + tempTileArrayTop);
+
+  for (var i = 0; i < tileArray.length; i +=1) {
+    //in a new temp array, if there a "B" and index is > 0, swap index value with index-1 value:
+    if (tileArray[i] === "B") {
+      //console.log("found a B tile");
       if (i > 0) {
-        tempTileArrayLeft[i] = tileArray[i-1];
-        tempTileArrayLeft[i-1] = tileArray[i];
+        //console.log("Before swap: tempTileArrayLeft:" + tempTileArrayLeft);
+        var lTemp = tempTileArrayLeft[i];
+        tempTileArrayLeft[i] = tempTileArrayLeft[i-1];
+        tempTileArrayLeft[i-1] = lTemp;
+
         swapLeftMove = true;
+
+        //console.log("After swap: tempTileArrayLeft:" + tempTileArrayLeft);
+        //now check to see if new swapped array contains 3 B's in a row:
           if (swapLeftMove) {
             for (var j = 0; j < tempTileArrayLeft.length; j +=1) {
               if (tempTileArrayLeft[j] === "B" && tempTileArrayLeft[j+1] ==="B" && tempTileArrayLeft[j+2] === "B") {
                 validMove = true;
                 console.log("tempTileArrayLeft:" + tempTileArrayLeft);
+                // this new array should contain a board with at least 3 blue tiles in a row:
                 return tempTileArrayLeft;
               }
             }
           }
       }
       else if (i < 99) {
-        tempTileArrayRight[i] = tileArray[i+1];
-        tempTileArrayRight[i+1] = tileArray[i];
+        var rTemp = tempTileArrayRight[i];
+        tempTileArrayRight[i] = tempTileArrayRight[i+1];
+        tempTileArrayRight[i+1] = rTemp;
+        // tempTileArrayRight[i] = tileArray[i+1];
+        // tempTileArrayRight[i+1] = tileArray[i];
         swapRightMove = true;
         if (swapRightMove) {
           for (var k = 0; k < tempTileArrayRight.length; k +=1) {
@@ -303,10 +321,13 @@ function makeMoveComputer() {
         }
       }
       else if (i > 9) {
-        tempTileArrayTop[i] = tileArray[i+10];
-        tempTileArrayTop[i+10] = tileArray[i];
+        var tTemp = tempTileArrayTop[i];
+        tempTileArrayTop[i] = tempTileArrayTop[i+10];
+        tempTileArrayTop[i+10] = tTemp;
+        // tempTileArrayTop[i] = tileArray[i+10];
+        // tempTileArrayTop[i+10] = tileArray[i];
         swapTopMove = true;
-        if (swapRightTop) {
+        if (swapTopMove) {
           for (var m = 0; m < tempTileArrayTop.length; m +=1) {
             if (tempTileArrayTop[m] === "B" && tempTileArrayTop[m+1] ==="B" && tempTileArrayTop[m+2] === "B") {
               validMove = true;
@@ -317,14 +338,18 @@ function makeMoveComputer() {
         }
       }
       else if (i < 90) {
-        tempTileArrayBottom[i] = tileArray[i-10];
-        tempTileArrayBottom[i-10] = tileArray[i];
+        var bTemp = tempTileArrayBottom[i];
+        tempTileArrayBottom[i] = tempTileArrayBottom[i-10];
+        tempTileArrayBottom[i-10] = bTemp;
+        // tempTileArrayBottom[i] = tileArray[i-10];
+        // tempTileArrayBottom[i-10] = tileArray[i];
         swapBottomMove = true;
-        if (swapRightBottom) {
+        if (swapBottomMove) {
           for (var n = 0; n < tempTileArrayBottom.length; n +=1) {
             if (tempTileArrayBottom[n] === "B" && tempTileArrayBottom[n+1] ==="B" && tempTileArrayBottom[n+2] === "B") {
               validMove = true;
               console.log("tempTileArrayBottom:" + tempTileArrayBottom);
+              console.log("indeces: ");
               return tempTileArrayBottom;
             }
           }
@@ -335,13 +360,7 @@ function makeMoveComputer() {
   }
 
   //pick a random move and return new array. For now, I'll swap the first two tiles:
-  //console.log("current tileArray" + tileArray);
   var tempArrayNoMatch = [];
-  // tempArrayNoMatch[0] = tileArray[1];
-  // tempArrayNoMatch[1] = tileArray[0];
-  //console.log("before tempArrayNoMatch: " + tempArrayNoMatch);
-  console.log("tempArrayNoMatch:" + tempArrayNoMatch);
-  console.log("tileArray: " + tileArray);
   for (var f = 0; f < tileArray.length; f +=1) {
     tempArrayNoMatch.push(tileArray[f]);
   }
@@ -350,8 +369,6 @@ function makeMoveComputer() {
   tempArrayNoMatch[0] = tempArrayNoMatch[1];
   tempArrayNoMatch[1] = fTemp;
   console.log("after swap tempArrayNoMatch: " + tempArrayNoMatch);
-  //console.log("tempArrayNoMatch:" + tempArrayNoMatch);
-  //return tempArrayNoMatch;
 
   console.log("returning tempArrayNoMatch:");
   return tempArrayNoMatch;
