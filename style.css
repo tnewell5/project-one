@@ -68,7 +68,8 @@
 .tile {
   border: 1px solid black;
   display: inline-block;
-  width: 18px;
+  width: 16px;
+  padding-left: 2px;
 }
 
 .red {
