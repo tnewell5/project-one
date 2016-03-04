@@ -1,5 +1,22 @@
 console.log("js window has loaded");
 
+// game play:
+// ask if 1 or 2 players, initiate health bars
+// health bar gets a color, sets health to max health
+// asks player1 to make a move by clicking on two
+// adjacent tiles. Checks to see if tiles are adjacent
+//if adjacent, swap the tiles in array and display
+//if not adjacent, asks player1 to re-swap tiles
+//once two tiles are swapped, need to check if there is
+// a match of at least 3 adjacent tiles of the same color
+// if so, check to see if the matched tile color corresponds
+// to any player's health color and then reduce that
+// player's health bar accordingly by that amount and
+// refill the matched tile slots with new random tiles
+// if there is no match of at least 3 adjacent tiles,
+// undo the swap and ask player to swap again
+
+
 // global variables declaration:
 var gameBoard = document.querySelector(".gameBoard");
 var tileSpan;
@@ -38,7 +55,6 @@ function populateBoard() {
       tileSpan.classList.add("tile");
     }
 
-    //console.log(tileSpan.innerText);
     gameBoard.appendChild(tileSpan);
     tileArray.push(tileSpan.innerText);
     activateTile(tileSpan, i);
@@ -46,22 +62,17 @@ function populateBoard() {
 }
 
 // adds event listener to the tile, which, upon a click,
-// pushes the address of the tile in tileArray to
-// player.move array:
+// pushes the address of the tile in tileArray to player.move array:
 function activateTile(tile, index) {
   tile.addEventListener("click", function(event) {
     player.move.push(index);
-    // the following sort does not always work - why?
-    player.move = player.move.sort();
     console.log("tile was clicked, tileArray index: " + index);
     console.log(player.move);
     if (player.move.length === 2) {tileSwap();}
   });
-
 }
 
-// creates a randomly generated color for a tile
-//(Red, Blue, Greeen, or Yellow):
+// creates a randomly generated color for a tile:
 function tileColorCreation() {
   //function taken from Mozilla Developer Network:
   var randomNum = Math.floor(Math.random() * (7 - 1)) + 1;
@@ -80,7 +91,6 @@ function recreateBoard() {
   for (var j = 0; j < 100; j += 1) {
     tileSpanArray[j].innerText = tileArray[j];
 
-    //tileSpan.innerText = tileColorCreation();
     if (tileSpanArray[j].innerText === "R") {
       tileSpanArray[j].className = "tile";
       tileSpanArray[j].classList.add("red");
@@ -108,10 +118,7 @@ function recreateBoard() {
     }
 
     gameBoard.appendChild(tileSpanArray[j]);
-
-    //activateTile(tileSpan, i);
   }
-  //console.log(tileSpanArray);
 }
 
 var computer = {
@@ -119,7 +126,6 @@ var computer = {
   health: 0,
   //move array will hold 2 clicked tiles:
   move: []
-
 }
 
 var player = {
@@ -127,24 +133,7 @@ var player = {
   health: 0,
   //move array will hold 2 clicked tiles:
   move: []
-
 }
-
-// game play:
-// ask if 1 or 2 players, initiate health bars
-// health bar gets a color, sets health to max health
-// asks player1 to make a move by clicking on two
-// adjacent tiles. Checks to see if tiles are adjacent
-//if adjacent, swap the tiles in array and display
-//if not adjacent, asks player1 to re-swap tiles
-//once two tiles are swapped, need to check if there is
-// a match of at least 3 adjacent tiles of the same color
-// if so, check to see if the matched tile color corresponds
-// to any player's health color and then reduce that
-// player's health bar accordingly by that amount and
-// refill the matched tile slots with new random tiles
-// if there is no match of at least 3 adjacent tiles,
-// undo the swap and ask player to swap again
 
 function gameInitialize() {
   // fills players' health bars with colors:
@@ -168,12 +157,12 @@ function makeMove() {
 
 function threeRedMatch() {
   // checking for at least 3 red tiles in a row:
+  var healthReduction = 0;
   for (var m = 0; m < tileArray.length; m +=1) {
     var redMatchstatus = false;
     if (tileArray[m] === "R" && tileArray[m+1] === "R" && tileArray[m+2] === "R") {
       console.log(m + "index is Red and has a horizonal match");
       redMatchstatus = true;
-      var healthReduction = 0;
       //count all red tiles in a row and reduce opponent's health by that amount:
       while (redMatchstatus && tileArray[m] === "R") {
         healthReduction += 1;
@@ -187,12 +176,10 @@ function threeRedMatch() {
   return healthReduction;
 }
 
-
-
 function tileSwap() {
   //console.log("work here");
   // check to see if tiles are adjacent:
-  if (player.move[1] - player.move[0] === 1 || player.move[1] - player.move[0] === 10) {
+  if (Math.abs(player.move[1] - player.move[0]) === 1 || Math.abs(player.move[1] - player.move[0]) === 10) {
     console.log("cards are adjacent");
     message.innerText = "Computer makes a move";
     // swap color values in tileArray
