@@ -188,6 +188,7 @@ function threeRedMatch() {
 }
 
 
+
 function tileSwap() {
   //console.log("work here");
   // check to see if tiles are adjacent:
@@ -253,8 +254,73 @@ function reduceHealth(reductionNum) {
 
 }
 
+// checks if board contains 3 horizonally matched red tiles. If does, returns true. Otherwise, returns false:
+function checkBoard() {
+  var result = false;
+  for (var i = 0; i < tileArray.length; i +=1) {
+    if (tileArray[i] === "R" && tileArray[i+1] === "R" && tileArray[i+2] === "R") {
+      result = true;
+    }
+    else {
+    }
+  }
+  console.log(result);
+  return result;
+}
+
+// resets the board to eliminate existing matches prior to game start:
+// currently only checks for red tiles in row (also need to add check for blue tiles and column order)
+function resetBoard() {
+  //re-shuffle tileArray:
+  tileArray = [];
+    for (var i = 0; i < 100; i +=1) {
+      tileArray.push(tileColorCreation());
+    }
+
+  var tileSpanArray = gameBoard.querySelectorAll('.tile');
+  for (var k = 0; k < tileArray.length; k +=1) {
+    gameBoard.removeChild(tileSpanArray[k]);
+  }
+
+  for (var j = 0; j < tileArray.length; j +=1) {
+    tileSpanArray[j].innerText = tileArray[j];
+    gameBoard.appendChild(tileSpanArray[j]);
+
+    if (tileSpanArray[j].innerText === "R") {
+      tileSpanArray[j].className = "tile";
+      tileSpanArray[j].classList.add("red");
+
+    }
+    else if (tileSpanArray[j].innerText === "B") {
+      tileSpanArray[j].className = "tile";
+      tileSpanArray[j].classList.add("blue");
+    }
+    else if (tileSpanArray[j].innerText === "G") {
+      tileSpanArray[j].className = "tile";
+      tileSpanArray[j].classList.add("green");
+    }
+    else if (tileSpanArray[j].innerText === "Y") {
+      tileSpanArray[j].className = "tile";
+      tileSpanArray[j].classList.add("yellow");
+    }
+    else if (tileSpanArray[j].innerText === "P") {
+      tileSpanArray[j].className = "tile";
+      tileSpanArray[j].classList.add("purple");
+    }
+    else if (tileSpanArray[j].innerText === "O") {
+      tileSpanArray[j].className = "tile";
+      tileSpanArray[j].classList.add("orange");
+    }
+  }
+}
+
 
 populateBoard();
+//console.log(tileArray);
+if (checkBoard()) {
+  resetBoard();
+}
+//console.log(tileArray);
 gameInitialize();
 makeMove();
 healthBar();
