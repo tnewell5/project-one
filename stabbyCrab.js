@@ -251,9 +251,63 @@ function makeMovePlayer() {
 
 }
 
-//displayes that computer is making a move:
+//displayes that computer is making a move and makes computer move:
 function makeMoveComputer() {
   message.innerText = "Computer makes a move";
+  //computer move is chosen at random. Computer will check if there is a potential match:
+  // picks a blue tile and swaps it with a left,right,top,bottom adjacent tiles. Fill in a tempTileArray
+  // loop over tempTileArray to see if there is a match of 3 blue
+  //if match, set validMove to true, if not keep looping till the end of array and swap last two tiles
+  var tempTileArrayLeft = tileArray;
+  var swapLeftMove = false;
+  var tempTileArrayRight = tileArray;
+  var swapRightMove = false;
+  var tempTileArrayTop = tileArray;
+  var swapTopMove = false;
+  var tempTileArrayBottom = tileArray;
+  var swapBottomMove = false;
+  var validMove = false;
+
+  for (var i = 0; i < tileArray.length; i +=1) {
+    if (tileArray[i] === "B") {
+      if (i > 0) {
+        tempTileArrayLeft[i] = tileArray[i-1];
+        tempTileArrayLeft[i-1] = tileArray[i];
+        swapLeftMove = true;
+          if (swapLeftMove) {
+            for (var j = 0; j < tempTileArrayLeft.length; j +=1) {
+              if (tempTileArrayLeft[j] === "B" && tempTileArrayLeft[j+1] ==="B" && tempTileArrayLeft[j+2] === "B") {
+                validMove = true;
+                return tempTileArrayLeft;
+              }
+            }
+          }
+      }
+      else if (i < 100) {
+        tempTileArrayRight[i] = tileArray[i+1];
+        tempTileArrayRight[i+1] = tileArray[i];
+        swapRightMove = true;
+        if (swapRightMove) {
+          for (var k = 0; k < tempTileArrayLeft.length; k +=1) {
+            if (tempTileArrayRight[k] === "B" && tempTileArrayRight[k+1] ==="B" && tempTileArrayRight[k+2] === "B") {
+              validMove = true;
+              return tempTileArrayRight;
+            }
+          }
+        }
+      }
+      else if (i > 9) {
+        tempTileArrayTop[i] = tileArray[i+10];
+        tempTileArrayTop[i+10] = tileArray[i];
+        swapTopMove = true;
+      }
+      else if (i < 90) {
+        tempTileArrayBottom[i] = tileArray[i-10];
+        tempTileArrayBottom[i-10] = tileArray[i];
+        swapBottomMove = true;
+      }
+    }
+  }
 }
 
 function threeRedMatch() {
