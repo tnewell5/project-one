@@ -182,13 +182,36 @@ function tileSwap() {
     // interate over tileArray values and once find and "R",
     // check if R's index plus 1 and R's index plus 10 values are
     // also value "R".
+
+
+//testing:
+
     for (var m = 0; m < tileArray.length; m +=1) {
+      var redMatchstatus = false;
+      // if there are at least 3 red tiles in a row:
       if (tileArray[m] === "R" && tileArray[m+1] === "R" && tileArray[m+2] === "R") {
         console.log(m + "index is Red and has a horizonal match");
-      } 
+        redMatchstatus = true;
+        var healthReduction = 0;
+        //var matchingTileIndex = m;
+        //count all red tiles in a row and reduce opponent's health
+        //by that amount:
+        while (redMatchstatus && tileArray[m] === "R") {
+          healthReduction += 1;
+          //console.log("healthReduction is: " + healthReduction);
+          m += 1;
+        }
+        redMatchstatus = false;
+        console.log("healthReduction is now: " + healthReduction);
+
+      }
 
 
     }
+
+// ....
+
+
   }
   else {
     console.log("cards are not adjacent");
