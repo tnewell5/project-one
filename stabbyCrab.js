@@ -5,6 +5,8 @@ var gameBoard = document.querySelector(".gameBoard");
 var tileSpan;
 var tileArray = [];
 var message = document.querySelector(".message");
+var healthBarComputer = document.querySelector(".health.computer");
+var healthBarSpan;
 
 // game board creation:
 function populateBoard() {
@@ -201,7 +203,9 @@ function tileSwap() {
     //function returns healthReduction amount:
     threeRedMatch();
     // now can reduce player's health bar by healthReduction and just re-create board:
-    
+    //try using progress bar to track health?
+
+
 
 
   }
@@ -214,6 +218,20 @@ function tileSwap() {
 
 }
 
+function healthBar() {
+  console.log("healthBarComputer node: " + healthBarComputer);
+
+  for (var i = 0; i < 20; i += 1) {
+  healthBarSpan = document.createElement('span');
+  healthBarSpan.classList.add("healthTile");
+  healthBarComputer.appendChild(healthBarSpan);
+  console.log("new health tile: " + healthBarSpan);
+  }
+
+}
+
+
 populateBoard();
 gameInitialize();
 makeMove();
+healthBar();
