@@ -251,25 +251,29 @@ function makeMovePlayer() {
 
 }
 
-//displayes that computer is making a move and makes computer move:
+//computer makes a move - returns a new tileArray that contains 3 blue in a row:
 function makeMoveComputer() {
   message.innerText = "Computer makes a move";
   //computer move is chosen at random. Computer will check if there is a potential match:
   // picks a blue tile and swaps it with a left,right,top,bottom adjacent tiles. Fill in a tempTileArray
   // loop over tempTileArray to see if there is a match of 3 blue
   //if match, set validMove to true, if not keep looping till the end of array and swap last two tiles
-  var tempTileArrayLeft = tileArray;
+  var tempTileArrayLeft = [];
   var swapLeftMove = false;
-  var tempTileArrayRight = tileArray;
+  var tempTileArrayRight = [];
   var swapRightMove = false;
-  var tempTileArrayTop = tileArray;
+  var tempTileArrayTop = [];
   var swapTopMove = false;
-  var tempTileArrayBottom = tileArray;
+  var tempTileArrayBottom = [];
   var swapBottomMove = false;
   var validMove = false;
 
+  //console.log("current tileArray: " + tileArray);
   for (var i = 0; i < tileArray.length; i +=1) {
+    //console.log("we got to the B condition");
     if (tileArray[i] === "B") {
+
+      //console.log("we found a B");
       if (i > 0) {
         tempTileArrayLeft[i] = tileArray[i-1];
         tempTileArrayLeft[i-1] = tileArray[i];
@@ -278,19 +282,21 @@ function makeMoveComputer() {
             for (var j = 0; j < tempTileArrayLeft.length; j +=1) {
               if (tempTileArrayLeft[j] === "B" && tempTileArrayLeft[j+1] ==="B" && tempTileArrayLeft[j+2] === "B") {
                 validMove = true;
+                console.log("tempTileArrayLeft:" + tempTileArrayLeft);
                 return tempTileArrayLeft;
               }
             }
           }
       }
-      else if (i < 100) {
+      else if (i < 99) {
         tempTileArrayRight[i] = tileArray[i+1];
         tempTileArrayRight[i+1] = tileArray[i];
         swapRightMove = true;
         if (swapRightMove) {
-          for (var k = 0; k < tempTileArrayLeft.length; k +=1) {
+          for (var k = 0; k < tempTileArrayRight.length; k +=1) {
             if (tempTileArrayRight[k] === "B" && tempTileArrayRight[k+1] ==="B" && tempTileArrayRight[k+2] === "B") {
               validMove = true;
+              console.log("tempTileArrayRight:" + tempTileArrayRight);
               return tempTileArrayRight;
             }
           }
@@ -300,14 +306,55 @@ function makeMoveComputer() {
         tempTileArrayTop[i] = tileArray[i+10];
         tempTileArrayTop[i+10] = tileArray[i];
         swapTopMove = true;
+        if (swapRightTop) {
+          for (var m = 0; m < tempTileArrayTop.length; m +=1) {
+            if (tempTileArrayTop[m] === "B" && tempTileArrayTop[m+1] ==="B" && tempTileArrayTop[m+2] === "B") {
+              validMove = true;
+              console.log("tempTileArrayTop:" + tempTileArrayTop);
+              return tempTileArrayTop;
+            }
+          }
+        }
       }
       else if (i < 90) {
         tempTileArrayBottom[i] = tileArray[i-10];
         tempTileArrayBottom[i-10] = tileArray[i];
         swapBottomMove = true;
+        if (swapRightBottom) {
+          for (var n = 0; n < tempTileArrayBottom.length; n +=1) {
+            if (tempTileArrayBottom[n] === "B" && tempTileArrayBottom[n+1] ==="B" && tempTileArrayBottom[n+2] === "B") {
+              validMove = true;
+              console.log("tempTileArrayBottom:" + tempTileArrayBottom);
+              return tempTileArrayBottom;
+            }
+          }
+        }
       }
     }
+
   }
+
+  //pick a random move and return new array. For now, I'll swap the first two tiles:
+  //console.log("current tileArray" + tileArray);
+  var tempArrayNoMatch = [];
+  // tempArrayNoMatch[0] = tileArray[1];
+  // tempArrayNoMatch[1] = tileArray[0];
+  //console.log("before tempArrayNoMatch: " + tempArrayNoMatch);
+  console.log("tempArrayNoMatch:" + tempArrayNoMatch);
+  console.log("tileArray: " + tileArray);
+  for (var f = 0; f < tileArray.length; f +=1) {
+    tempArrayNoMatch.push(tileArray[f]);
+  }
+  console.log("before tempArrayNoMatch: " + tempArrayNoMatch);
+  var fTemp = tempArrayNoMatch[0];
+  tempArrayNoMatch[0] = tempArrayNoMatch[1];
+  tempArrayNoMatch[1] = fTemp;
+  console.log("after swap tempArrayNoMatch: " + tempArrayNoMatch);
+  //console.log("tempArrayNoMatch:" + tempArrayNoMatch);
+  //return tempArrayNoMatch;
+
+  console.log("returning tempArrayNoMatch:");
+  return tempArrayNoMatch;
 }
 
 function threeRedMatch() {
