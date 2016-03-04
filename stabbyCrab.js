@@ -302,9 +302,54 @@ function tileSwap() {
 //now need a function that will replace the matched red tiles with brand-new random tiles:
 //function takes in an array of mathed tile indeces:
 function fillInMatchedTiles() {
-  console.log("matchedTilesIndArray: " + matchedTilesIndArray);
-}
+  //console.log("matchedTilesIndArray: " + matchedTilesIndArray);
+  //loop over matchedTilesIndArray and for each value replace the index of tileArray with new tile:
+  console.log("before" + tileArray);
+  for (var num of matchedTilesIndArray) {
+    tileArray[num] = tileColorCreation();
+  }
+  console.log("after" + tileArray);
 
+  // re-display new tileArray on game board:
+  var tileSpanArray = gameBoard.querySelectorAll('.tile');
+  for (var k = 0; k < tileArray.length; k +=1) {
+    gameBoard.removeChild(tileSpanArray[k]);
+  }
+
+  for (var j = 0; j < tileArray.length; j +=1) {
+    tileSpanArray[j].innerText = tileArray[j];
+    gameBoard.appendChild(tileSpanArray[j]);
+
+    if (tileSpanArray[j].innerText === "R") {
+      tileSpanArray[j].className = "tile";
+      tileSpanArray[j].classList.add("red");
+
+    }
+    else if (tileSpanArray[j].innerText === "B") {
+      tileSpanArray[j].className = "tile";
+      tileSpanArray[j].classList.add("blue");
+    }
+    else if (tileSpanArray[j].innerText === "G") {
+      tileSpanArray[j].className = "tile";
+      tileSpanArray[j].classList.add("green");
+    }
+    else if (tileSpanArray[j].innerText === "Y") {
+      tileSpanArray[j].className = "tile";
+      tileSpanArray[j].classList.add("yellow");
+    }
+    else if (tileSpanArray[j].innerText === "P") {
+      tileSpanArray[j].className = "tile";
+      tileSpanArray[j].classList.add("purple");
+    }
+    else if (tileSpanArray[j].innerText === "O") {
+      tileSpanArray[j].className = "tile";
+      tileSpanArray[j].classList.add("orange");
+    }
+  }
+
+
+
+}
 
 populateBoard();
 //console.log(tileArray);
