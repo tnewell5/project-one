@@ -44,14 +44,14 @@
   height: 75px;
   width: 100px;
   border: 1px solid black;
-  margin: 20px;
+  margin: 5px;
 }
 
 #player {
   height: 75px;
   width: 100px;
   border: 1px solid black;
-  margin: 20px;
+  margin: 5px;
 }
 
 .crab {
@@ -101,4 +101,8 @@
 
 .playerColor {
   background-color: skyblue;
+}
+
+h4 {
+  margin: 5px;
 }
