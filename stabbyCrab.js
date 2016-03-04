@@ -181,17 +181,21 @@ function reduceHealth(reductionNum) {
 
 }
 
-// checks if board contains 3 horizonally matched red tiles. If does, returns true. Otherwise, returns false:
+// checks if board contains 3 horizonally matched red or blue tiles. If does, returns true. Otherwise, returns false:
+// function needs to be called in a loop?
 function checkBoard() {
   var result = false;
   for (var i = 0; i < tileArray.length; i +=1) {
     if (tileArray[i] === "R" && tileArray[i+1] === "R" && tileArray[i+2] === "R") {
       result = true;
+      console.log("3 red in a row");
     }
-    else {
+    else if (tileArray[i] === "B" && tileArray[i+1] === "B" && tileArray[i+2] === "B") {
+      result = true;
+      console.log("3 blue in a row");
     }
   }
-  console.log(result);
+  //console.log(result);
   return result;
 }
 
@@ -241,11 +245,15 @@ function resetBoard() {
   }
 }
 
-function makeMove() {
-  // ask player1 to make a move:
-  //alert("Player - make your move!");
+//asks player to make a move:
+function makeMovePlayer() {
   message.innerText = "Player - make your move!";
 
+}
+
+//displayes that computer is making a move:
+function makeMoveComputer() {
+  message.innerText = "Computer makes a move";
 }
 
 function threeRedMatch() {
@@ -272,44 +280,12 @@ function threeRedMatch() {
   return healthReduction;
 }
 
-function tileSwap() {
-  //console.log("work here");
-  // check to see if tiles are adjacent:
-  if (Math.abs(player.move[1] - player.move[0]) === 1 || Math.abs(player.move[1] - player.move[0]) === 10) {
-    console.log("cards are adjacent");
-    message.innerText = "Computer makes a move";
-    // swap color values in tileArray
-    var temp = tileArray[player.move[0]];
-    tileArray[player.move[0]] = tileArray[player.move[1]];
-    tileArray[player.move[1]] = temp;
-    // display the swapped tiles on the board:
-    recreateBoard();
-    //function returns healthReduction amount:
-    //threeRedMatch();
-    // now can reduce player's health bar by healthReduction and just re-create board:
-    //try using progress bar to track health?
-    reduceHealth(threeRedMatch());
-    fillInMatchedTiles();
-
-  }
-  else {
-    console.log("cards are not adjacent");
-    // alert user to re-pick adjacent tiles
-    message.innerText = "Please choose two adjacent tiles!";
-  }
-}
-
-//now need a function that will replace the matched red tiles with brand-new random tiles:
-//function takes in an array of mathed tile indeces:
+//replaces the matched red tiles with brand-new random tiles:
 function fillInMatchedTiles() {
-  //console.log("matchedTilesIndArray: " + matchedTilesIndArray);
   //loop over matchedTilesIndArray and for each value replace the index of tileArray with new tile:
-  console.log("before" + tileArray);
   for (var num of matchedTilesIndArray) {
     tileArray[num] = tileColorCreation();
   }
-  console.log("after" + tileArray);
-
   // re-display new tileArray on game board:
   var tileSpanArray = gameBoard.querySelectorAll('.tile');
   for (var k = 0; k < tileArray.length; k +=1) {
@@ -323,7 +299,6 @@ function fillInMatchedTiles() {
     if (tileSpanArray[j].innerText === "R") {
       tileSpanArray[j].className = "tile";
       tileSpanArray[j].classList.add("red");
-
     }
     else if (tileSpanArray[j].innerText === "B") {
       tileSpanArray[j].className = "tile";
@@ -347,16 +322,46 @@ function fillInMatchedTiles() {
     }
   }
 
-
-
 }
+
+function tileSwap() {
+  //console.log("work here");
+  // check to see if tiles are adjacent:
+  if (Math.abs(player.move[1] - player.move[0]) === 1 || Math.abs(player.move[1] - player.move[0]) === 10) {
+    console.log("cards are adjacent");
+    //makeMoveComputer();
+    //message.innerText = "Computer makes a move";
+    // swap color values in tileArray
+    var temp = tileArray[player.move[0]];
+    tileArray[player.move[0]] = tileArray[player.move[1]];
+    tileArray[player.move[1]] = temp;
+    // display the swapped tiles on the board:
+    recreateBoard();
+    //function returns healthReduction amount:
+    //threeRedMatch();
+    // now can reduce player's health bar by healthReduction and just re-create board:
+    //try using progress bar to track health?
+    reduceHealth(threeRedMatch());
+    fillInMatchedTiles();
+    makeMoveComputer();
+
+  }
+  else {
+    console.log("cards are not adjacent");
+    // alert user to re-pick adjacent tiles
+    message.innerText = "Please choose two adjacent tiles!";
+  }
+}
+
+
 
 populateBoard();
 //console.log(tileArray);
-if (checkBoard()) {
+// while checkBoard() evaluates to true, call resetBoard():
+while (checkBoard()) {
   resetBoard();
 }
 //console.log(tileArray);
 gameInitialize();
-makeMove();
+makeMovePlayer();
 healthBar();
