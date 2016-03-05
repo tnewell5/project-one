@@ -67,9 +67,14 @@ function populateBoard() {
 function activateTile(tile, index) {
   tile.addEventListener("click", function(event) {
     player.move.push(index);
-    console.log("tile was clicked, tileArray index: " + index);
-    console.log(player.move);
-    if (player.move.length === 2) {tileSwap();}
+    //console.log("tile was clicked, tileArray index: " + index);
+    //console.log(player.move);
+    if (player.move.length === 2) {
+      // if isValidMove returns true, call tileSwap():
+      if (isValidMove(player.move[0], player.move[1])) {
+      tileSwap();
+      }
+    }
   });
 }
 
@@ -249,6 +254,69 @@ function resetBoard() {
 function makeMovePlayer() {
   message.innerText = "Player - make your move!";
 
+}
+
+// checks to see if two passed in tiles are adjacent and if swap matches a color:
+function isValidMove(tile1Index, tile2Index) {
+  //are two tles adjacent?
+  //var adjacentTiles = false;
+  if (Math.abs(tile1Index - tile2Index) === 1 || Math.abs(tile1Index - tile2Index) === 10) {
+    //adjacentTiles = true;
+    console.log("tiles are adjacent");
+
+    //does the tiles swap result in a matched color of at least 3 tiles in a row?
+    tileArr = [];
+
+    tileArr.push(tile1Index, tile2Index);
+    tileArr.sort();
+    var smaller = tileArr[0];
+    var larger = tileArr[1];
+    // horizontal swaps:
+    // check if smaller swapped tile has matched both pieces to the right of it:
+    var horizontalRight = (tileArray[smaller] === tileArray[smaller + 2] &&
+                           tileArray[smaller] === tileArray[smaller + 3]);
+    // check if larger swapped tile has matched both pieces to the left of it:
+    var horizontalLeft = (tileArray[larger] === tileArray[larger - 2] &&
+                          tileArray[larger] === tileArray[larger - 3]);
+    //check if smaller swapped tile has matched both pieces above it
+    var horizonalAbove = (tileArray[smaller] === tileArray[smaller - 9] &&
+                          tileArray[smaller] === tileArray[smaller - 19]);
+    //check if smaller swapped tile has matched both pieces below it
+    var horizontalBelow = (tileArray[smaller] === tileArray[smaller + 11] &&
+                           tileArray[smaller] === tileArray[smaller + 21]);
+    //check if smaller swapped tile has matched one piece above it and one below
+    var horizontalAboveBelow = (tileArray[smaller] === tileArray[smaller - 9] &&
+                                tileArray[smaller] === tileArray[smaller + 11]);
+    //check if larger swapped tile has matched both pieces above it
+    //check if larger swapped tile has matched both pieces below it
+    //check if larger swapped tile has matched one piece above it and one below
+
+    //vertical swaps:
+    //check if lower swapped tile has matched both pieces above it
+    //check if higher swapped tile has matched both pieces below it
+    //check if lower swapped tile has matched two pieces to the left of it
+    //check if lower swapped tile has matched two pieces to the right of it
+    //check if lower swapped tile has matched one piece to the left and one to the right
+    //check if higher swapped tile has matched two pieces to the left of it
+    //check if higher swapped tile has matched two pieces to the right of it
+    //check if higher swapped tile has matched one piece to the left and one to the right
+
+
+
+    console.log("sorted tileArr: " + tileArr);
+    if (horizontalRight || horizontalLeft || horizonalAbove || horizontalBelow ||
+        horizontalAboveBelow || ) {
+         console.log("swap would result in a matched color");
+         console.log("isValidMove will return true");
+         return true;
+    }
+  }
+  else {
+      console.log("cards are not adjacent");
+      message.innerText = "Please choose two adjacent tiles!";
+  }
+  console.log("isValidMove will return false");
+  return false;
 }
 
 //computer makes a move - returns a new tileArray that contains 3 blue in a row:
@@ -445,8 +513,8 @@ function fillInMatchedTiles() {
 function tileSwap() {
   //console.log("work here");
   // check to see if tiles are adjacent:
-  if (Math.abs(player.move[1] - player.move[0]) === 1 || Math.abs(player.move[1] - player.move[0]) === 10) {
-    console.log("cards are adjacent");
+  // if (Math.abs(player.move[1] - player.move[0]) === 1 || Math.abs(player.move[1] - player.move[0]) === 10) {
+  //   console.log("cards are adjacent");
     //makeMoveComputer();
     //message.innerText = "Computer makes a move";
     // swap color values in tileArray
@@ -463,12 +531,12 @@ function tileSwap() {
     fillInMatchedTiles();
     makeMoveComputer();
 
-  }
-  else {
-    console.log("cards are not adjacent");
-    // alert user to re-pick adjacent tiles
-    message.innerText = "Please choose two adjacent tiles!";
-  }
+  // }
+  // else {
+  //   console.log("cards are not adjacent");
+  //   // alert user to re-pick adjacent tiles
+  //   message.innerText = "Please choose two adjacent tiles!";
+  // }
 }
 
 
