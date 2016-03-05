@@ -71,9 +71,14 @@ function activateTile(tile, index) {
     //console.log(player.move);
     if (player.move.length === 2) {
       // if isValidMove returns true, call tileSwap():
-      if (isValidMove(player.move[0], player.move[1])) {
-      tileSwap();
-      }
+        if (isValidMove(player.move[0], player.move[1])) {
+        tileSwap();
+        }
+        else {
+          console.log("invalid move");
+          message.innerText = "Please make a valid move!";
+          player.move = [];
+        }
     }
   });
 }
@@ -268,53 +273,75 @@ function isValidMove(tile1Index, tile2Index) {
     tileArr = [];
 
     tileArr.push(tile1Index, tile2Index);
-    tileArr.sort();
-    var smaller = tileArr[0];
-    var larger = tileArr[1];
+    tileArr = tileArr.sort();
+    var small = tileArr[0];
+    var large = tileArr[1];
+    var low = tileArr[1];
+    var high = tileArr[0];
     // horizontal swaps:
     // check if smaller swapped tile has matched both pieces to the right of it:
-    var horizontalRight = (tileArray[smaller] === tileArray[smaller + 2] &&
-                           tileArray[smaller] === tileArray[smaller + 3]);
+    var horizontalSmallRight = (tileArray[small] === tileArray[small + 2] &&
+                           tileArray[small] === tileArray[small + 3]);
     // check if larger swapped tile has matched both pieces to the left of it:
-    var horizontalLeft = (tileArray[larger] === tileArray[larger - 2] &&
-                          tileArray[larger] === tileArray[larger - 3]);
+    var horizontalLargeLeft = (tileArray[large] === tileArray[large - 2] &&
+                          tileArray[large] === tileArray[large - 3]);
     //check if smaller swapped tile has matched both pieces above it
-    var horizonalAbove = (tileArray[smaller] === tileArray[smaller - 9] &&
-                          tileArray[smaller] === tileArray[smaller - 19]);
+    var horizonalSmallAbove = (tileArray[small] === tileArray[small - 9] &&
+                          tileArray[small] === tileArray[small - 19]);
     //check if smaller swapped tile has matched both pieces below it
-    var horizontalBelow = (tileArray[smaller] === tileArray[smaller + 11] &&
-                           tileArray[smaller] === tileArray[smaller + 21]);
+    var horizontalSmallBelow = (tileArray[small] === tileArray[small + 11] &&
+                           tileArray[small] === tileArray[small + 21]);
     //check if smaller swapped tile has matched one piece above it and one below
-    var horizontalAboveBelow = (tileArray[smaller] === tileArray[smaller - 9] &&
-                                tileArray[smaller] === tileArray[smaller + 11]);
+    var horizontalSmallAboveBelow = (tileArray[small] === tileArray[small - 9] &&
+                                tileArray[small] === tileArray[small + 11]);
     //check if larger swapped tile has matched both pieces above it
+    var horizontalLargeAbove = (tileArray[large] === tileArray[large - 11] &&
+                          tileArray[large] === tileArray[large - 21]);
     //check if larger swapped tile has matched both pieces below it
+    var horizontalLargeBelow = (tileArray[large] === tileArray[large + 9] &&
+                          tileArray[large] === tileArray[large + 19]);
     //check if larger swapped tile has matched one piece above it and one below
-
+    var horizontalLargeAboveBelow = (tileArray[large] === tileArray[large - 11] &&
+                                tileArray[large] === tileArray[large + 9]);
     //vertical swaps:
     //check if lower swapped tile has matched both pieces above it
+    var verticalLowAbove = (tileArray[low] === tileArray[low - 20] &&
+                            tileArray[low] === tileArray[low - 30]);
     //check if higher swapped tile has matched both pieces below it
+    var verticalHighAbove = (tileArray[high] === tileArray[high + 20] &&
+                             tileArray[high] === tileArray[high + 30]);
     //check if lower swapped tile has matched two pieces to the left of it
+    var verticalLowLeft = (tileArray[low] === tileArray[low - 11] &&
+                           tileArray[low] === tileArray[low - 12]);
     //check if lower swapped tile has matched two pieces to the right of it
+    var verticalLowRight = (tileArray[low] === tileArray[low - 9] &&
+                            tileArray[low] === tileArray[low - 8]);
     //check if lower swapped tile has matched one piece to the left and one to the right
+    var verticalLowLeftRight = (tileArray[low] === tileArray[low - 11] &&
+                                tileArray[low] === tileArray[low - 9]);
     //check if higher swapped tile has matched two pieces to the left of it
+    var verticalHighLeft = (tileArray[high] === tileArray[high + 9] &&
+                            tileArray[high] === tileArray[high + 8]);
     //check if higher swapped tile has matched two pieces to the right of it
+    var verticalHighRight = (tileArray[high] === tileArray[high + 11] &&
+                             tileArray[high] === tileArray[high + 12]);
     //check if higher swapped tile has matched one piece to the left and one to the right
-
+    var verticalHighLeftRight = (tileArray[high] === tileArray[high + 9] &&
+                             tileArray[high] === tileArray[high + 11]);
 
 
     console.log("sorted tileArr: " + tileArr);
-    if (horizontalRight || horizontalLeft || horizonalAbove || horizontalBelow ||
-        horizontalAboveBelow || ) {
+    if (horizontalSmallRight || horizontalLargeLeft || horizonalSmallAbove ||
+      horizontalSmallBelow || horizontalSmallAboveBelow || horizontalLargeAbove ||
+      horizontalLargeBelow || horizontalLargeAboveBelow || verticalLowAbove ||
+      verticalHighAbove || verticalLowLeft || verticalLowRight || verticalLowLeftRight ||
+      verticalHighLeft || verticalHighRight || verticalHighLeftRight) {
          console.log("swap would result in a matched color");
          console.log("isValidMove will return true");
          return true;
     }
   }
-  else {
-      console.log("cards are not adjacent");
-      message.innerText = "Please choose two adjacent tiles!";
-  }
+
   console.log("isValidMove will return false");
   return false;
 }
