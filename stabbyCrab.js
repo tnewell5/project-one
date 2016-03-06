@@ -28,6 +28,8 @@ var healthBarPlayer = document.querySelector(".health.player");
 var remainingHealthComputer = 0;
 var remainingHealthPlayer = 0;
 var matchedTilesIndArray = [];
+var reduceComputerHealth = 0;
+var reducePlayerHealth = 0;
 
 // game board creation:
 function populateBoard() {
@@ -342,7 +344,9 @@ function makeMoveComputer() {
 
       // reduce player's health and health bar:
       reduceHealthOfPlayer(threeBlueMatch());
-      // replace matched tiles with new random tiles and display the board
+      // replace matched tiles with new random tiles and display the board:
+      matchedTiles();
+
       return true;
     }
     //can swap right?
@@ -358,7 +362,9 @@ function makeMoveComputer() {
 
       // reduce player's health and health bar:
       reduceHealthOfPlayer(threeBlueMatch());
-      // replace matched tiles with new random tiles
+      // replace matched tiles with new random tiles:
+      matchedTiles();
+
       return true;
     }
     //can swap down?
@@ -374,7 +380,9 @@ function makeMoveComputer() {
 
       // reduce player's health and health bar:
       reduceHealthOfPlayer(threeBlueMatch());
-      // replace matched tiles with new random tiles
+      // replace matched tiles with new random tiles:
+      matchedTiles();
+
       return true;
     }
     //can swap left?
@@ -390,7 +398,9 @@ function makeMoveComputer() {
 
       // reduce player's health and health bar:
       reduceHealthOfPlayer(threeBlueMatch());
-      // replace matched tiles with new random tiles
+      // replace matched tiles with new random tiles:
+      matchedTiles();
+
       return true;
     }
     // else {
@@ -539,6 +549,83 @@ function threeRedMatch() {
   return healthReduction;
 }
 
+//new code:
+// checks the board for any color matched tiles in row and column and
+// reduces computer's and/or player's health accordingly
+// it will call the health reduction and refill matched tiles functions here:
+function matchedTiles() {
+  // matched red tiles reduce computer health. declared globally - resetting here:
+  reduceComputerHealth = 0;
+  // matched blue tiles reduce player health. declared globally - resetting here:
+  reducePlayerHealth = 0;
+  //matchedTilesIndArray is declared globally, resetting here:
+  matchedTilesIndArray = [];
+  var repeatingLetterCount = 0;
+  var currentLetter = "K";
+  var match = false;
+
+  //loop over tileArray and look for any repeating color of minimum 3 tiles horizonally or vertically.
+  //If the color is red, increment reduceComputerHealth count and call red health reduction function
+  //if the color is blue, increment reducePlayerHealth count and call blue health reduction function
+  // call the refill matched tiles function for any matched tiles
+  for (var i = 0; i < tileArray.length; i += 1) {
+    //if there is a horizonal match of any color of at least 3 tiles:
+    if (tileArray[i] === tileArray[i+1] && tileArray[i] === tileArray[i+2]) {
+      currentLetter = tileArray[i];
+      match = true;
+
+      while (match && tileArray[i] === currentLetter) {
+        repeatingLetterCount += 1;
+        //matchedTilesIndArray.push(i);
+        //let's push a letter instead of index onto matchedTilesIndArray:
+        matchedTilesIndArray.push(tileArray[i]);
+        //console.log(tileArray[i] + "just got pushed onto the matchedTilesIndArray");
+        i += 1;
+      }
+      match = false;
+      currentLetter = tileArray[i];
+    }
+    else if (tileArray[i] === tileArray[i+10] && tileArray[i] === tileArray[i+20]) {
+      currentLetter = tileArray[i];
+      match = true;
+
+      while (match && tileArray[i] === currentLetter) {
+        repeatingLetterCount += 1;
+        //matchedTilesIndArray.push(i);
+        //let's push a letter instead of index onto matchedTilesIndArray:
+        matchedTilesIndArray.push(tileArray[i]);
+        //console.log(tileArray[i] + "just got pushed onto the matchedTilesIndArray");
+        i += 10;
+      }
+      match = false;
+      currentLetter = tileArray[i];
+    }
+  }
+
+  console.log("matchedTilesIndArray: " + matchedTilesIndArray);
+  //now loop over the matchedTilesIndArray and for every red tile reduce Computer's health
+  //and for every blue tile reduce player's health:
+  for (var letter of matchedTilesIndArray) {
+    if (letter === "R") {
+      reduceComputerHealth += 1;
+    }
+    else if (letter === "B") {
+      reducePlayerHealth += 1;
+    }
+  }
+  console.log("computer health will be reduced by: " + reduceComputerHealth);
+  console.log("player health will be reduced by: " + reducePlayerHealth);
+  //now let's call the functions that actually reflect reduced health on health bars:
+  // reduceHealthOfComputer(threeRedMatch()); - should be able to eliminate the threeRedMatch function
+  reduceHealthOfComputer(reduceComputerHealth);
+  reduceHealthOfPlayer(reducePlayerHealth);
+
+  //finally, let's call the function that randomly refills all matched tiles:
+  fillInMatchedTiles();
+
+
+}
+
 //see if computer move resulted in a match of three or more blue tiles:
 function threeBlueMatch() {
   // checking for at least 3 blue tiles in a row:
@@ -632,10 +719,11 @@ function tileSwap() {
     //threeRedMatch();
     // now can reduce player's health bar by healthReduction and just re-create board:
     //try using progress bar to track health?
-    reduceHealthOfComputer(threeRedMatch());
-    fillInMatchedTiles();
+    //reduceHealthOfComputer(threeRedMatch());
+    //matchedTiles does not return healh reduction - but should it?
+    //reduceHealthOfComputer(matchedTiles());
+    //fillInMatchedTiles();
     makeMoveComputer();
-
 
 
 }
@@ -647,9 +735,7 @@ populateBoard();
 while (checkBoard()) {
   resetBoard();
 }
-//console.log(tileArray);
-if (!checkBoard()) {
+
   gameInitialize();
   makeMovePlayer();
   healthBarComp();
-}
