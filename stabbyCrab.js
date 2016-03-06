@@ -19,6 +19,7 @@ console.log("js window has loaded");
 
 // global variables declaration:
 var gameBoard = document.querySelector(".gameBoard");
+var isBoardReady = false;
 var tileSpan;
 var tileArray = [];
 var message = document.querySelector(".message");
@@ -232,14 +233,26 @@ function reduceHealthOfPlayer(reductionNum) {
 // function needs to be called in a loop?
 function checkBoard() {
   var result = false;
+  //var threeRedRow = tileArray[i] === "R" && tileArray[i+1] === "R" && tileArray[i+2] === "R";
+  //var threeBlueRow = tileArray[i] === "B" && tileArray[i+1] === "B" && tileArray[i+2] === "B";
+
   for (var i = 0; i < tileArray.length; i +=1) {
-    if (tileArray[i] === "R" && tileArray[i+1] === "R" && tileArray[i+2] === "R") {
-      result = true;
-      console.log("3 red in a row");
-    }
-    else if (tileArray[i] === "B" && tileArray[i+1] === "B" && tileArray[i+2] === "B") {
-      result = true;
-      console.log("3 blue in a row");
+    //if (tileArray[i] === "R" && tileArray[i+1] === "R" && tileArray[i+2] === "R")
+    if ((tileArray[i] === "R" && tileArray[i+1] === "R" && tileArray[i+2] === "R") ||
+        (tileArray[i] === "B" && tileArray[i+1] === "B" && tileArray[i+2] === "B") ||
+        (tileArray[i] === "P" && tileArray[i+1] === "P" && tileArray[i+2] === "P") ||
+        (tileArray[i] === "O" && tileArray[i+1] === "O" && tileArray[i+2] === "O") ||
+        (tileArray[i] === "G" && tileArray[i+1] === "G" && tileArray[i+2] === "G") ||
+        (tileArray[i] === "Y" && tileArray[i+1] === "Y" && tileArray[i+2] === "Y") ||
+        (tileArray[i] === "R" && tileArray[i+10] === "R" && tileArray[i+20] === "R") ||
+        (tileArray[i] === "B" && tileArray[i+10] === "B" && tileArray[i+20] === "B") ||
+        (tileArray[i] === "P" && tileArray[i+10] === "P" && tileArray[i+20] === "P") ||
+        (tileArray[i] === "O" && tileArray[i+10] === "O" && tileArray[i+20] === "O") ||
+        (tileArray[i] === "G" && tileArray[i+10] === "G" && tileArray[i+20] === "G") ||
+        (tileArray[i] === "Y" && tileArray[i+10] === "Y" && tileArray[i+20] === "Y")) {
+
+          result = true;
+          console.log("re-set board due to 3 in a row");
     }
   }
   //console.log(result);
@@ -290,6 +303,7 @@ function resetBoard() {
       tileSpanArray[j].classList.add("orange");
     }
   }
+
 }
 
 //asks player to make a move:
@@ -634,6 +648,8 @@ while (checkBoard()) {
   resetBoard();
 }
 //console.log(tileArray);
-gameInitialize();
-makeMovePlayer();
-healthBarComp();
+if (!checkBoard()) {
+  gameInitialize();
+  makeMovePlayer();
+  healthBarComp();
+}
