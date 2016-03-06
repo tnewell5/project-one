@@ -23,7 +23,9 @@ var tileSpan;
 var tileArray = [];
 var message = document.querySelector(".message");
 var healthBarComputer = document.querySelector(".health.computer");
+var healthBarPlayer = document.querySelector(".health.player");
 var remainingHealthComputer = 0;
+var remainingHealthPlayer = 0;
 var matchedTilesIndArray = [];
 
 // game board creation:
@@ -159,23 +161,35 @@ function gameInitialize() {
 
 }
 
-function healthBar() {
-  // computer healthBar:
+// computer healthBar:
+function healthBarComp() {
   for (var i = 0; i < 20; i += 1) {
   var healthBarSpan = document.createElement('span');
-  healthBarSpan.classList.add("healthTile");
+  healthBarSpan.classList.add("healthTileComputer");
   healthBarComputer.appendChild(healthBarSpan);
   //console.log("new health tile: " + healthBarSpan);
   }
   remainingHealthComputer = 20;
 }
 
-function reduceHealth(reductionNum) {
+// player healthBar:
+function healthBarPlay() {
+  for (var i = 0; i < 20; i += 1) {
+  var healthBarSpan = document.createElement('span');
+  healthBarSpan.classList.add("healthTilePlayer");
+  healthBarPlayer.appendChild(healthBarSpan);
+  //console.log("new health tile: " + healthBarSpan);
+  }
+  remainingHealthPlayer = 20;
+}
+
+// reduces computer's health due to successful player move:
+function reduceHealthOfComputer(reductionNum) {
   //reduce computer health displayed on its health bar:
   remainingHealthComputer -= reductionNum;
   //console.log("remaining health: " + remainingHealthComputer);
 
-  var tempArray = healthBarComputer.querySelectorAll(".healthTile");
+  var tempArray = healthBarComputer.querySelectorAll(".healthTileComputer");
   //console.log("tempArray[0]: " + tempArray[0]);
 
   for (var i = 0; i < tempArray.length; i +=1) {
@@ -185,8 +199,31 @@ function reduceHealth(reductionNum) {
 
   for (var k = 0; k < remainingHealthComputer; k += 1) {
     var healthBarSpan = document.createElement('span');
-    healthBarSpan.classList.add("healthTile");
+    healthBarSpan.classList.add("healthTileComputer");
     healthBarComputer.appendChild(healthBarSpan);
+  }
+
+}
+
+// reduces player's health due to successful computer move:
+function reduceHealthOfPlayer(reductionNum) {
+  //reduce player health displayed on its health bar:
+  remainingHealthPlayer -= reductionNum;
+  //console.log("remaining health: " + remainingHealthPlayer);
+
+  // CHANGE THE FOLLOWING CODE:
+  var tempArray = healthBarPlayer.querySelectorAll(".healthTilePlayer");
+  //console.log("tempArray[0]: " + tempArray[0]);
+
+  for (var i = 0; i < tempArray.length; i +=1) {
+    healthBarPlayer.removeChild(tempArray[i]);
+    //console.log("removing");
+  }
+
+  for (var k = 0; k < remainingHealthPlayer; k += 1) {
+    var healthBarSpan = document.createElement('span');
+    healthBarSpan.classList.add("healthTilePlayer");
+    healthBarPlayer.appendChild(healthBarSpan);
   }
 
 }
@@ -281,16 +318,32 @@ function makeMoveComputer() {
     //can swap up?
     if (isValidMove(blueTiles[k], blueTiles[k]-10)) {
       console.log("swapped blue tile index: " + blueTiles[k] + " up");
-      // swap tiles
-      // reduce player's health and health bar
-      // replace matched tiles with new random tiles
+      // swap tiles in tileArray:
+      computer.move[0] = blueTiles[k];
+      computer.move[1] = blueTiles[k]-10;
+      var temp = tileArray[computer.move[0]];
+      tileArray[computer.move[0]] = tileArray[computer.move[1]];
+      tileArray[computer.move[1]] = temp;
+      console.log("new tileArray: " + tileArray);
+
+      // reduce player's health and health bar:
+      reduceHealthOfPlayer(threeBlueMatch());
+      // replace matched tiles with new random tiles and display the board
       return true;
     }
     //can swap right?
     else if (isValidMove(blueTiles[k], blueTiles[k]+1)) {
       console.log("swapped blue tile index: " + blueTiles[k] + " right");
       // swap tiles
-      // reduce player's health and health bar
+      computer.move[0] = blueTiles[k];
+      computer.move[1] = blueTiles[k]+1;
+      var temp = tileArray[computer.move[0]];
+      tileArray[computer.move[0]] = tileArray[computer.move[1]];
+      tileArray[computer.move[1]] = temp;
+      console.log("new tileArray: " + tileArray);
+
+      // reduce player's health and health bar:
+      reduceHealthOfPlayer(threeBlueMatch());
       // replace matched tiles with new random tiles
       return true;
     }
@@ -298,7 +351,15 @@ function makeMoveComputer() {
     else if (isValidMove(blueTiles[k], blueTiles[k]+10)) {
       console.log("swapped blue tile index: " + blueTiles[k] + " down");
       // swap tiles
-      // reduce player's health and health bar
+      computer.move[0] = blueTiles[k];
+      computer.move[1] = blueTiles[k]+10;
+      var temp = tileArray[computer.move[0]];
+      tileArray[computer.move[0]] = tileArray[computer.move[1]];
+      tileArray[computer.move[1]] = temp;
+      console.log("new tileArray: " + tileArray);
+
+      // reduce player's health and health bar:
+      reduceHealthOfPlayer(threeBlueMatch());
       // replace matched tiles with new random tiles
       return true;
     }
@@ -306,31 +367,39 @@ function makeMoveComputer() {
     else if (isValidMove(blueTiles[k], blueTiles[k]-1)) {
       console.log("swapped blue tile index: " + blueTiles[k] + " left");
       // swap tiles
-      // reduce player's health and health bar
+      computer.move[0] = blueTiles[k];
+      computer.move[1] = blueTiles[k]-1;
+      var temp = tileArray[computer.move[0]];
+      tileArray[computer.move[0]] = tileArray[computer.move[1]];
+      tileArray[computer.move[1]] = temp;
+      console.log("new tileArray: " + tileArray);
+
+      // reduce player's health and health bar:
+      reduceHealthOfPlayer(threeBlueMatch());
       // replace matched tiles with new random tiles
       return true;
     }
-    else {
-      //console.log("computer ran out of possible moves");
-      // swap any tiles that would result in a valid move:
-      // for (var m = 0; m < tileArray; m +=1) {
-      //   if (isValidMove(tileArray[m], blueTiles[m]-10)) {
-      //     console.log("swapped random tile up");
-      //   }
-      //   else if (isValidMove(tileArray[m], blueTiles[m]+1)) {
-      //     console.log("swapped random tile right");
-      //   }
-      //   else if (isValidMove(tileArray[m], blueTiles[m]+10)) {
-      //     console.log("swapped random tile down");
-      //   }
-      //   else if (isValidMove(tileArray[m], blueTiles[m]-1)) {
-      //     console.log("swapped random tile left");
-      //   }
-      //   else {
-      //     console.log("computer ran out of possible moves");
-      //   }
-      // }
-    }
+    // else {
+    //   console.log("computer ran out of possible moves");
+    //   //swap any tiles that would result in a valid move:
+    //   for (var m = 0; m < tileArray; m +=1) {
+    //     if (isValidMove(tileArray[m], blueTiles[m]-10)) {
+    //       console.log("swapped random tile up");
+    //     }
+    //     else if (isValidMove(tileArray[m], blueTiles[m]+1)) {
+    //       console.log("swapped random tile right");
+    //     }
+    //     else if (isValidMove(tileArray[m], blueTiles[m]+10)) {
+    //       console.log("swapped random tile down");
+    //     }
+    //     else if (isValidMove(tileArray[m], blueTiles[m]-1)) {
+    //       console.log("swapped random tile left");
+    //     }
+    //     else {
+    //       console.log("computer ran out of possible moves");
+    //     }
+    //   }
+    // }
   }
   console.log("computer ran out of possible moves");
   return true;
@@ -421,12 +490,12 @@ function isValidMove(tile1Index, tile2Index) {
         verticalHighAbove || verticalLowLeft || verticalLowRight || verticalLowLeftRight ||
         verticalHighLeft || verticalHighRight || verticalHighLeftRight) {
 
-           console.log("isValidMove will return true");
+           //console.log("isValidMove will return true");
            return true;
       }
     }
   }
-  console.log("isValidMove will return false");
+  //console.log("isValidMove will return false");
   return false;
 }
 
@@ -435,8 +504,8 @@ function isValidMove(tile1Index, tile2Index) {
 function threeRedMatch() {
   // checking for at least 3 red tiles in a row:
   var healthReduction = 0;
-  // var matchedTilesIndArray = [];
-  //matchedTilesIndArray is declared globally - need to remember to reset
+  //matchedTilesIndArray is declared globally - need to remember to reset:
+  matchedTilesIndArray = [];
   for (var m = 0; m < tileArray.length; m +=1) {
     var redMatchstatus = false;
     if (tileArray[m] === "R" && tileArray[m+1] === "R" && tileArray[m+2] === "R") {
@@ -453,6 +522,31 @@ function threeRedMatch() {
     }
   }
   // still need to figure out how to check for matching red values in a column.
+  return healthReduction;
+}
+
+//see if computer move resulted in a match of three or more blue tiles:
+function threeBlueMatch() {
+  // checking for at least 3 blue tiles in a row:
+  var healthReduction = 0;
+  //matchedTilesIndArray is declared globally - need to remember to reset:
+  matchedTilesIndArray = [];
+  for (var m = 0; m < tileArray.length; m +=1) {
+    var blueMatchstatus = false;
+    if (tileArray[m] === "B" && tileArray[m+1] === "B" && tileArray[m+2] === "B") {
+      console.log(m + "index is Blue and has a horizonal match");
+      blueMatchstatus = true;
+      //count all blue tiles in a row and reduce opponent's health by that amount:
+      while (blueMatchstatus && tileArray[m] === "B") {
+        healthReduction += 1;
+        matchedTilesIndArray.push(m);
+        m += 1;
+      }
+      blueMatchstatus = false;
+      console.log("healthReduction is now: " + healthReduction);
+    }
+  }
+  // still need to figure out how to check for matching blue values in a column.
   return healthReduction;
 }
 
@@ -500,6 +594,13 @@ function fillInMatchedTiles() {
 
 }
 
+// function computerTileSwap() {
+//   // swap color values in tileArray
+//   var temp = tileArray[player.move[0]];
+//   tileArray[player.move[0]] = tileArray[player.move[1]];
+//   tileArray[player.move[1]] = temp;
+//}
+
 function tileSwap() {
   //console.log("work here");
   // check to see if tiles are adjacent:
@@ -517,13 +618,13 @@ function tileSwap() {
     //threeRedMatch();
     // now can reduce player's health bar by healthReduction and just re-create board:
     //try using progress bar to track health?
-    reduceHealth(threeRedMatch());
+    reduceHealthOfComputer(threeRedMatch());
     fillInMatchedTiles();
     makeMoveComputer();
 
 
-}
 
+}
 
 
 populateBoard();
@@ -535,4 +636,4 @@ while (checkBoard()) {
 //console.log(tileArray);
 gameInitialize();
 makeMovePlayer();
-healthBar();
+healthBarComp();
