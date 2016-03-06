@@ -343,7 +343,7 @@ function makeMoveComputer() {
       console.log("new tileArray: " + tileArray);
 
       // reduce player's health and health bar:
-      reduceHealthOfPlayer(threeBlueMatch());
+      //reduceHealthOfPlayer(threeBlueMatch());
       // replace matched tiles with new random tiles and display the board:
       matchedTiles();
 
@@ -361,7 +361,7 @@ function makeMoveComputer() {
       console.log("new tileArray: " + tileArray);
 
       // reduce player's health and health bar:
-      reduceHealthOfPlayer(threeBlueMatch());
+      //reduceHealthOfPlayer(threeBlueMatch());
       // replace matched tiles with new random tiles:
       matchedTiles();
 
@@ -379,7 +379,7 @@ function makeMoveComputer() {
       console.log("new tileArray: " + tileArray);
 
       // reduce player's health and health bar:
-      reduceHealthOfPlayer(threeBlueMatch());
+      //reduceHealthOfPlayer(threeBlueMatch());
       // replace matched tiles with new random tiles:
       matchedTiles();
 
@@ -397,7 +397,7 @@ function makeMoveComputer() {
       console.log("new tileArray: " + tileArray);
 
       // reduce player's health and health bar:
-      reduceHealthOfPlayer(threeBlueMatch());
+      //reduceHealthOfPlayer(threeBlueMatch());
       // replace matched tiles with new random tiles:
       matchedTiles();
 
@@ -524,30 +524,29 @@ function isValidMove(tile1Index, tile2Index) {
 }
 
 
-
-function threeRedMatch() {
-  // checking for at least 3 red tiles in a row:
-  var healthReduction = 0;
-  //matchedTilesIndArray is declared globally - need to remember to reset:
-  matchedTilesIndArray = [];
-  for (var m = 0; m < tileArray.length; m +=1) {
-    var redMatchstatus = false;
-    if (tileArray[m] === "R" && tileArray[m+1] === "R" && tileArray[m+2] === "R") {
-      console.log(m + "index is Red and has a horizonal match");
-      redMatchstatus = true;
-      //count all red tiles in a row and reduce opponent's health by that amount:
-      while (redMatchstatus && tileArray[m] === "R") {
-        healthReduction += 1;
-        matchedTilesIndArray.push(m);
-        m += 1;
-      }
-      redMatchstatus = false;
-      console.log("healthReduction is now: " + healthReduction);
-    }
-  }
-  // still need to figure out how to check for matching red values in a column.
-  return healthReduction;
-}
+// function threeRedMatch() {
+//   // checking for at least 3 red tiles in a row:
+//   var healthReduction = 0;
+//   //matchedTilesIndArray is declared globally - need to remember to reset:
+//   matchedTilesIndArray = [];
+//   for (var m = 0; m < tileArray.length; m +=1) {
+//     var redMatchstatus = false;
+//     if (tileArray[m] === "R" && tileArray[m+1] === "R" && tileArray[m+2] === "R") {
+//       console.log(m + "index is Red and has a horizonal match");
+//       redMatchstatus = true;
+//       //count all red tiles in a row and reduce opponent's health by that amount:
+//       while (redMatchstatus && tileArray[m] === "R") {
+//         healthReduction += 1;
+//         matchedTilesIndArray.push(m);
+//         m += 1;
+//       }
+//       redMatchstatus = false;
+//       console.log("healthReduction is now: " + healthReduction);
+//     }
+//   }
+//   // still need to figure out how to check for matching red values in a column.
+//   return healthReduction;
+// }
 
 //new code:
 // checks the board for any color matched tiles in row and column and
@@ -627,29 +626,29 @@ function matchedTiles() {
 }
 
 //see if computer move resulted in a match of three or more blue tiles:
-function threeBlueMatch() {
-  // checking for at least 3 blue tiles in a row:
-  var healthReduction = 0;
-  //matchedTilesIndArray is declared globally - need to remember to reset:
-  matchedTilesIndArray = [];
-  for (var m = 0; m < tileArray.length; m +=1) {
-    var blueMatchstatus = false;
-    if (tileArray[m] === "B" && tileArray[m+1] === "B" && tileArray[m+2] === "B") {
-      console.log(m + "index is Blue and has a horizonal match");
-      blueMatchstatus = true;
-      //count all blue tiles in a row and reduce opponent's health by that amount:
-      while (blueMatchstatus && tileArray[m] === "B") {
-        healthReduction += 1;
-        matchedTilesIndArray.push(m);
-        m += 1;
-      }
-      blueMatchstatus = false;
-      console.log("healthReduction is now: " + healthReduction);
-    }
-  }
-  // still need to figure out how to check for matching blue values in a column.
-  return healthReduction;
-}
+// function threeBlueMatch() {
+//   // checking for at least 3 blue tiles in a row:
+//   var healthReduction = 0;
+//   //matchedTilesIndArray is declared globally - need to remember to reset:
+//   matchedTilesIndArray = [];
+//   for (var m = 0; m < tileArray.length; m +=1) {
+//     var blueMatchstatus = false;
+//     if (tileArray[m] === "B" && tileArray[m+1] === "B" && tileArray[m+2] === "B") {
+//       console.log(m + "index is Blue and has a horizonal match");
+//       blueMatchstatus = true;
+//       //count all blue tiles in a row and reduce opponent's health by that amount:
+//       while (blueMatchstatus && tileArray[m] === "B") {
+//         healthReduction += 1;
+//         matchedTilesIndArray.push(m);
+//         m += 1;
+//       }
+//       blueMatchstatus = false;
+//       console.log("healthReduction is now: " + healthReduction);
+//     }
+//   }
+//
+//   return healthReduction;
+// }
 
 //replaces the matched red tiles with brand-new random tiles:
 function fillInMatchedTiles() {
