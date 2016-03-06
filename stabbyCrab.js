@@ -164,7 +164,7 @@ function gameInitialize() {
 
 }
 
-// computer healthBar:
+// initializes computer healthBar:
 function healthBarComp() {
   for (var i = 0; i < 20; i += 1) {
   var healthBarSpan = document.createElement('span');
@@ -175,7 +175,7 @@ function healthBarComp() {
   remainingHealthComputer = 20;
 }
 
-// player healthBar:
+// initializes player healthBar:
 function healthBarPlay() {
   for (var i = 0; i < 20; i += 1) {
   var healthBarSpan = document.createElement('span');
@@ -210,8 +210,12 @@ function reduceHealthOfComputer(reductionNum) {
 
 // reduces player's health due to successful computer move:
 function reduceHealthOfPlayer(reductionNum) {
+
+  //console.log("entered reduceHealthOfPlayer function. remainingHealthPlayer is: " + remainingHealthPlayer);
   //reduce player health displayed on its health bar:
   remainingHealthPlayer -= reductionNum;
+  //console.log("remainingHealthPlayer was just reduced by reductionNum of " + reductionNum);
+  console.log("remainingHealthPlayer is now: " + remainingHealthPlayer);
   //console.log("remaining health: " + remainingHealthPlayer);
 
   // CHANGE THE FOLLOWING CODE:
@@ -340,7 +344,7 @@ function makeMoveComputer() {
       var temp = tileArray[computer.move[0]];
       tileArray[computer.move[0]] = tileArray[computer.move[1]];
       tileArray[computer.move[1]] = temp;
-      console.log("new tileArray: " + tileArray);
+      //console.log("new tileArray: " + tileArray);
 
       // reduce player's health and health bar:
       //reduceHealthOfPlayer(threeBlueMatch());
@@ -616,6 +620,7 @@ function matchedTiles() {
   console.log("player health will be reduced by: " + reducePlayerHealth);
   //now let's call the functions that actually reflect reduced health on health bars:
   // reduceHealthOfComputer(threeRedMatch()); - should be able to eliminate the threeRedMatch function
+  console.log("before calling reduceHealthOfPlayer function, reducePlayerHealth is: " + reducePlayerHealth);
   reduceHealthOfComputer(reduceComputerHealth);
   reduceHealthOfPlayer(reducePlayerHealth);
 
@@ -694,12 +699,6 @@ function fillInMatchedTiles() {
 
 }
 
-// function computerTileSwap() {
-//   // swap color values in tileArray
-//   var temp = tileArray[player.move[0]];
-//   tileArray[player.move[0]] = tileArray[player.move[1]];
-//   tileArray[player.move[1]] = temp;
-//}
 
 function tileSwap() {
   //console.log("work here");
@@ -737,4 +736,6 @@ while (checkBoard()) {
 
   gameInitialize();
   makeMovePlayer();
+  //initializes computer and player health bars:
   healthBarComp();
+  healthBarPlay();

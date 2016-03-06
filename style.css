@@ -100,9 +100,9 @@
   background-color: tomato;
 }*/
 
-.playerColor {
+/*.playerColor {
   background-color: skyblue;
-}
+}*/
 
 h4 {
   margin: 5px;
@@ -110,6 +110,13 @@ h4 {
 
 .healthTileComputer {
   background-color: tomato;
+  height: 15px;
+  width: 5px;
+  display: inline-block;
+}
+
+.healthTilePlayer {
+  background-color: skyblue;
   height: 15px;
   width: 5px;
   display: inline-block;
