@@ -75,7 +75,11 @@ function activateTile(tile, index) {
     if (player.move.length === 2) {
       // if isValidMove returns true, call tileSwap():
         if (isValidMove(player.move[0], player.move[1])) {
-        tileSwap();
+        //tileSwap();
+
+        // maybe playGame() will alternate between calling makeMovePlayer
+        // with makeMoveComputer functions?
+        playGame();
         }
         else {
           console.log("invalid move");
@@ -84,6 +88,119 @@ function activateTile(tile, index) {
         }
     }
   });
+}
+
+//works with player.move array, which already contains a valid move:
+function makeMovePlayer() {
+  //moved the following message to the end of makeMoveComputer function:
+  //message.innerText = "Player - make your move!";
+  //player.move
+  var temp = tileArray[player.move[0]];
+  tileArray[player.move[0]] = tileArray[player.move[1]];
+  tileArray[player.move[1]] = temp;
+  matchedTiles();
+
+  // resets player move (global object):
+  player.move = [];
+}
+
+// computer makes a move by creating an array of all blue tiles on the board and
+// checking if there is a valid move for each one until it finds one:
+// what should this function return?
+function makeMoveComputer() {
+  message.innerText = "Computer makes a move";
+  var blueTiles = [];
+  for (var i = 0; i < tileArray.length; i += 1) {
+    if (tileArray[i] === "B") {
+      //push address of blue tile into blueTiles array:
+      blueTiles.push(i);
+    }
+  }
+  //console.log("blueTiles array: " + blueTiles);
+  //try moving each blue tile up, right, left, down and see if valid move:
+  var foundMove = false;
+  for (var k = 0; k < blueTiles.length; k += 1) {
+    // isValidMove will return true if move is valid/ false otherwise:
+    //can swap up?
+    if (isValidMove(blueTiles[k], blueTiles[k]-10)) {
+      console.log("swapped blue tile index: " + blueTiles[k] + " up");
+      // swap tiles in tileArray:
+      computer.move[0] = blueTiles[k];
+      computer.move[1] = blueTiles[k]-10;
+      var temp = tileArray[computer.move[0]];
+      tileArray[computer.move[0]] = tileArray[computer.move[1]];
+      tileArray[computer.move[1]] = temp;
+      matchedTiles();
+
+      return true;
+    }
+    //can swap right?
+    else if (isValidMove(blueTiles[k], blueTiles[k]+1)) {
+      console.log("swapped blue tile index: " + blueTiles[k] + " right");
+      // swap tiles
+      computer.move[0] = blueTiles[k];
+      computer.move[1] = blueTiles[k]+1;
+      var temp = tileArray[computer.move[0]];
+      tileArray[computer.move[0]] = tileArray[computer.move[1]];
+      tileArray[computer.move[1]] = temp;
+      matchedTiles();
+
+      return true;
+    }
+    //can swap down?
+    else if (isValidMove(blueTiles[k], blueTiles[k]+10)) {
+      console.log("swapped blue tile index: " + blueTiles[k] + " down");
+      // swap tiles
+      computer.move[0] = blueTiles[k];
+      computer.move[1] = blueTiles[k]+10;
+      var temp = tileArray[computer.move[0]];
+      tileArray[computer.move[0]] = tileArray[computer.move[1]];
+      tileArray[computer.move[1]] = temp;
+      matchedTiles();
+
+      return true;
+    }
+    //can swap left?
+    else if (isValidMove(blueTiles[k], blueTiles[k]-1)) {
+      console.log("swapped blue tile index: " + blueTiles[k] + " left");
+      // swap tiles
+      computer.move[0] = blueTiles[k];
+      computer.move[1] = blueTiles[k]-1;
+      var temp = tileArray[computer.move[0]];
+      tileArray[computer.move[0]] = tileArray[computer.move[1]];
+      tileArray[computer.move[1]] = temp;
+      matchedTiles();
+
+      return true;
+    }
+
+    // resets computer move (global object):
+    computer.move = [];
+    // else {
+    //   console.log("computer ran out of possible moves");
+    //   //swap any tiles that would result in a valid move:
+    //   for (var m = 0; m < tileArray; m +=1) {
+    //     if (isValidMove(tileArray[m], blueTiles[m]-10)) {
+    //       console.log("swapped random tile up");
+    //     }
+    //     else if (isValidMove(tileArray[m], blueTiles[m]+1)) {
+    //       console.log("swapped random tile right");
+    //     }
+    //     else if (isValidMove(tileArray[m], blueTiles[m]+10)) {
+    //       console.log("swapped random tile down");
+    //     }
+    //     else if (isValidMove(tileArray[m], blueTiles[m]-1)) {
+    //       console.log("swapped random tile left");
+    //     }
+    //     else {
+    //       console.log("computer ran out of possible moves");
+    //     }
+    //   }
+    // }
+  }
+  console.log("computer ran out of possible moves");
+  message.innerText = "Player - make your move!";
+  return true;
 }
 
 // creates a randomly generated color for a tile:
@@ -147,6 +264,7 @@ function gameInitialize() {
   // sets players' health to max:
   computer.health = 10;
   player.health = 10;
+  message.innerText = "Player - make your move!";
 
 }
 
@@ -298,106 +416,7 @@ function resetBoard() {
 
 }
 
-//asks player to make a move:
-function makeMovePlayer() {
-  message.innerText = "Player - make your move!";
 
-}
-
-// computer makes a move by creating an array of all blue tiles on the board and
-// checking if there is a valid move for each one until it finds one:
-// what should this function return?
-function makeMoveComputer() {
-  message.innerText = "Computer makes a move";
-  var blueTiles = [];
-  for (var i = 0; i < tileArray.length; i += 1) {
-    if (tileArray[i] === "B") {
-      //push address of blue tile into blueTiles array:
-      blueTiles.push(i);
-    }
-  }
-  //console.log("blueTiles array: " + blueTiles);
-  //try moving each blue tile up, right, left, down and see if valid move:
-  var foundMove = false;
-  for (var k = 0; k < blueTiles.length; k += 1) {
-    // isValidMove will return true if move is valid/ false otherwise:
-    //can swap up?
-    if (isValidMove(blueTiles[k], blueTiles[k]-10)) {
-      console.log("swapped blue tile index: " + blueTiles[k] + " up");
-      // swap tiles in tileArray:
-      computer.move[0] = blueTiles[k];
-      computer.move[1] = blueTiles[k]-10;
-      var temp = tileArray[computer.move[0]];
-      tileArray[computer.move[0]] = tileArray[computer.move[1]];
-      tileArray[computer.move[1]] = temp;
-      matchedTiles();
-
-      return true;
-    }
-    //can swap right?
-    else if (isValidMove(blueTiles[k], blueTiles[k]+1)) {
-      console.log("swapped blue tile index: " + blueTiles[k] + " right");
-      // swap tiles
-      computer.move[0] = blueTiles[k];
-      computer.move[1] = blueTiles[k]+1;
-      var temp = tileArray[computer.move[0]];
-      tileArray[computer.move[0]] = tileArray[computer.move[1]];
-      tileArray[computer.move[1]] = temp;
-      matchedTiles();
-
-      return true;
-    }
-    //can swap down?
-    else if (isValidMove(blueTiles[k], blueTiles[k]+10)) {
-      console.log("swapped blue tile index: " + blueTiles[k] + " down");
-      // swap tiles
-      computer.move[0] = blueTiles[k];
-      computer.move[1] = blueTiles[k]+10;
-      var temp = tileArray[computer.move[0]];
-      tileArray[computer.move[0]] = tileArray[computer.move[1]];
-      tileArray[computer.move[1]] = temp;
-      matchedTiles();
-
-      return true;
-    }
-    //can swap left?
-    else if (isValidMove(blueTiles[k], blueTiles[k]-1)) {
-      console.log("swapped blue tile index: " + blueTiles[k] + " left");
-      // swap tiles
-      computer.move[0] = blueTiles[k];
-      computer.move[1] = blueTiles[k]-1;
-      var temp = tileArray[computer.move[0]];
-      tileArray[computer.move[0]] = tileArray[computer.move[1]];
-      tileArray[computer.move[1]] = temp;
-      matchedTiles();
-
-      return true;
-    }
-    // else {
-    //   console.log("computer ran out of possible moves");
-    //   //swap any tiles that would result in a valid move:
-    //   for (var m = 0; m < tileArray; m +=1) {
-    //     if (isValidMove(tileArray[m], blueTiles[m]-10)) {
-    //       console.log("swapped random tile up");
-    //     }
-    //     else if (isValidMove(tileArray[m], blueTiles[m]+1)) {
-    //       console.log("swapped random tile right");
-    //     }
-    //     else if (isValidMove(tileArray[m], blueTiles[m]+10)) {
-    //       console.log("swapped random tile down");
-    //     }
-    //     else if (isValidMove(tileArray[m], blueTiles[m]-1)) {
-    //       console.log("swapped random tile left");
-    //     }
-    //     else {
-    //       console.log("computer ran out of possible moves");
-    //     }
-    //   }
-    // }
-  }
-  console.log("computer ran out of possible moves");
-  return true;
-}
 
 // checks to see if two passed in tiles are adjacent and if swap matches a color:
 function isValidMove(tile1Index, tile2Index) {
@@ -546,6 +565,7 @@ function matchedTiles() {
   }
 
   console.log("matchedTilesIndArray: " + matchedTilesIndArray);
+  console.log("matchedTilesLettersArray: " + matchedTilesLettersArray);
   //now loop over the matchedTilesIndArray and for every red tile reduce Computer's health
   //and for every blue tile reduce player's health:
   for (var letter of matchedTilesLettersArray) {
@@ -610,45 +630,36 @@ function fillInMatchedTiles() {
       tileSpanArray[j].classList.add("orange");
     }
   }
+}
+
+function playGame() {
+  makeMovePlayer();
+  makeMoveComputer();
 
 }
 
-
-function tileSwap() {
-  //console.log("work here");
-  // check to see if tiles are adjacent:
-  // if (Math.abs(player.move[1] - player.move[0]) === 1 || Math.abs(player.move[1] - player.move[0]) === 10) {
-  //   console.log("cards are adjacent");
-    //makeMoveComputer();
-    //message.innerText = "Computer makes a move";
-    // swap color values in tileArray
-    var temp = tileArray[player.move[0]];
-    tileArray[player.move[0]] = tileArray[player.move[1]];
-    tileArray[player.move[1]] = temp;
+//function tileSwap() {
+//function playGame() {
+    // swap color values in tileArray:
+    // var temp = tileArray[player.move[0]];
+    // tileArray[player.move[0]] = tileArray[player.move[1]];
+    // tileArray[player.move[1]] = temp;
     // display the swapped tiles on the board:
-    recreateBoard();
-    //function returns healthReduction amount:
-    //threeRedMatch();
-    // now can reduce player's health bar by healthReduction and just re-create board:
-    //try using progress bar to track health?
-    //reduceHealthOfComputer(threeRedMatch());
-    //matchedTiles does not return healh reduction - but should it?
-    //reduceHealthOfComputer(matchedTiles());
-    //fillInMatchedTiles();
-    makeMoveComputer();
+    //recreateBoard();
+    // returns true - should eliminate if not using return value:
+    //makeMoveComputer();
 
-}
+//}
 
-
+//set up game:
 populateBoard();
-//console.log(tileArray);
 // while checkBoard() evaluates to true, call resetBoard():
 while (checkBoard()) {
   resetBoard();
 }
 
-  gameInitialize();
-  makeMovePlayer();
-  //initializes computer and player health bars:
-  healthBarComp();
-  healthBarPlay();
+gameInitialize();
+makeMovePlayer();
+//initializes computer and player health bars:
+healthBarComp();
+healthBarPlay();
