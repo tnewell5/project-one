@@ -61,7 +61,7 @@
 .gameBoard {
   height: 200px;
   width: 200px;
-  border: 1px solid black;
+  /*border: 1px solid black;*/
 
 }
 
@@ -70,29 +70,36 @@
   display: inline-block;
   width: 16px;
   padding-left: 2px;
+  border-radius: 25%;
+  transition: background 0.5s ease;
+
 }
 
-.red {
+.tile:hover {
+    border: 1px solid red;
+}
+
+.red,.R {
   background-color: tomato;
 }
 
-.blue {
+.blue,.B {
   background-color: skyblue;
 }
 
-.green {
+.green,.G {
   background-color: mediumseagreen;
 }
 
-.yellow {
+.yellow,.Y {
   background-color: khaki;
 }
 
-.purple {
+.purple,.P {
   background-color: slateblue;
 }
 
-.orange {
+.orange,.O {
   background-color: orange;
 }
 

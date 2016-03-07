@@ -70,16 +70,11 @@ function populateBoard() {
 function activateTile(tile, index) {
   tile.addEventListener("click", function(event) {
     player.move.push(index);
-    //console.log("tile was clicked, tileArray index: " + index);
-    //console.log(player.move);
+
     if (player.move.length === 2) {
       // if isValidMove returns true, call tileSwap():
         if (isValidMove(player.move[0], player.move[1])) {
-        //tileSwap();
-
-        // maybe playGame() will alternate between calling makeMovePlayer
-        // with makeMoveComputer functions?
-        playGame();
+          playGame();
         }
         else {
           console.log("invalid move");
@@ -94,21 +89,23 @@ function activateTile(tile, index) {
 function makeMovePlayer() {
   //moved the following message to the end of makeMoveComputer function:
   //message.innerText = "Player - make your move!";
-  //player.move
+  //swaps tiles:
+  console.log("tile array before player swap: " + tileArray);
   var temp = tileArray[player.move[0]];
   tileArray[player.move[0]] = tileArray[player.move[1]];
   tileArray[player.move[1]] = temp;
-  matchedTiles();
+  console.log("player swapped tiles index: " + player.move[0] + "and" + player.move[1]);
+  console.log("tile array after player swap: " + tileArray);
 
-  // resets player move (global object):
   player.move = [];
+  message.innerText = "Computer makes a move";
 }
 
 // computer makes a move by creating an array of all blue tiles on the board and
 // checking if there is a valid move for each one until it finds one:
 // what should this function return?
 function makeMoveComputer() {
-  message.innerText = "Computer makes a move";
+  // message.innerText = "Computer makes a move";
   var blueTiles = [];
   for (var i = 0; i < tileArray.length; i += 1) {
     if (tileArray[i] === "B") {
@@ -130,7 +127,7 @@ function makeMoveComputer() {
       var temp = tileArray[computer.move[0]];
       tileArray[computer.move[0]] = tileArray[computer.move[1]];
       tileArray[computer.move[1]] = temp;
-      matchedTiles();
+      //matchedTiles();
 
       if (remainingHealthPlayer < 1 || remainingHealthComputer < 1) {
         gameOver();
@@ -151,7 +148,7 @@ function makeMoveComputer() {
       var temp = tileArray[computer.move[0]];
       tileArray[computer.move[0]] = tileArray[computer.move[1]];
       tileArray[computer.move[1]] = temp;
-      matchedTiles();
+      //matchedTiles();
 
       if (remainingHealthPlayer < 1 || remainingHealthComputer < 1) {
         gameOver();
@@ -172,7 +169,7 @@ function makeMoveComputer() {
       var temp = tileArray[computer.move[0]];
       tileArray[computer.move[0]] = tileArray[computer.move[1]];
       tileArray[computer.move[1]] = temp;
-      matchedTiles();
+      //matchedTiles();
 
       if (remainingHealthPlayer < 1 || remainingHealthComputer < 1) {
         gameOver();
@@ -194,7 +191,7 @@ function makeMoveComputer() {
       var temp = tileArray[computer.move[0]];
       tileArray[computer.move[0]] = tileArray[computer.move[1]];
       tileArray[computer.move[1]] = temp;
-      matchedTiles();
+      //matchedTiles();
 
       if (remainingHealthPlayer < 1 || remainingHealthComputer < 1) {
         gameOver();
@@ -219,7 +216,7 @@ function makeMoveComputer() {
       var temp = tileArray[m];
       tileArray[m] = tileArray[m-10];
       tileArray[m-10] = temp;
-      matchedTiles();
+      //matchedTiles();
     }
     else if (isValidMove(tileArray[m], tileArray[m+1])) {
       console.log("swapped random tile right");
@@ -277,44 +274,6 @@ function tileColorCreation() {
   else if (randomNum === 5) {return "P";}
   else {return "O";}
 }
-
-//re-create board based on current tileArray:
-function recreateBoard() {
-  var tileSpanArray = gameBoard.querySelectorAll('.tile');
-  for (var j = 0; j < 100; j += 1) {
-    tileSpanArray[j].innerText = tileArray[j];
-
-    if (tileSpanArray[j].innerText === "R") {
-      tileSpanArray[j].className = "tile";
-      tileSpanArray[j].classList.add("red");
-
-    }
-    else if (tileSpanArray[j].innerText === "B") {
-      tileSpanArray[j].className = "tile";
-      tileSpanArray[j].classList.add("blue");
-    }
-    else if (tileSpanArray[j].innerText === "G") {
-      tileSpanArray[j].className = "tile";
-      tileSpanArray[j].classList.add("green");
-    }
-    else if (tileSpanArray[j].innerText === "Y") {
-      tileSpanArray[j].className = "tile";
-      tileSpanArray[j].classList.add("yellow");
-    }
-    else if (tileSpanArray[j].innerText === "P") {
-      tileSpanArray[j].className = "tile";
-      tileSpanArray[j].classList.add("purple");
-    }
-    else if (tileSpanArray[j].innerText === "O") {
-      tileSpanArray[j].className = "tile";
-      tileSpanArray[j].classList.add("orange");
-    }
-
-    gameBoard.appendChild(tileSpanArray[j]);
-  }
-}
-
-
 
 function gameInitialize() {
   // fills players' health bars with colors:
@@ -432,7 +391,6 @@ function checkBoard() {
 }
 
 // resets the board to eliminate existing matches prior to game start:
-// currently only checks for red tiles in row (also need to add check for blue tiles and column order)
 function resetBoard() {
   //re-shuffle tileArray:
   tileArray = [];
@@ -475,10 +433,49 @@ function resetBoard() {
       tileSpanArray[j].classList.add("orange");
     }
   }
-
 }
 
+//re-create board based on current tileArray:
+// when calling this function, make sure tileArray is current!
+function recreateBoard() {
+  //var tileSpanArray = gameBoard.querySelectorAll('.tile');
+  // for (var k = 0; k < tileArray.length; k +=1) {
+  //   gameBoard.removeChild(tileSpanArray[k]);
+  // }
+  gameBoard.innerHTML = '';
 
+  for (var j = 0; j < tileArray.length; j +=1) {
+    //tileSpanArray[j].innerText = tileArray[j];
+    var tileSpan = document.createElement('span');
+    tileSpan.innerText = tileArray[j];
+    activateTile(tileSpan, j);
+    gameBoard.appendChild(tileSpan);
+    addStyleToTile(tileSpan, tileSpan.innerText);
+  }
+}
+
+function addStyleToTile(tileSpan, color) {
+    tileSpan.className = "tile";
+
+    if (color === "R") {
+      tileSpan.classList.add("red");
+    }
+    else if (color === "B") {
+      tileSpan.classList.add("blue");
+    }
+    else if (color === "G") {
+      tileSpan.classList.add("green");
+    }
+    else if (color === "Y") {
+      tileSpan.classList.add("yellow");
+    }
+    else if (color === "P") {
+      tileSpan.classList.add("purple");
+    }
+    else if (color === "O") {
+      tileSpan.classList.add("orange");
+    }
+}
 
 // checks to see if two passed in tiles are adjacent and if swap matches a color:
 function isValidMove(tile1Index, tile2Index) {
@@ -581,6 +578,7 @@ function isValidMove(tile1Index, tile2Index) {
 // updates health bars
 // fills in matched tiles with new randomly generated tiles
 function matchedTiles() {
+  console.log("matching tiles");
   // matched red tiles reduce computer health. declared globally - resetting here:
   reduceComputerHealth = 0;
   // matched blue tiles reduce player health. declared globally - resetting here:
@@ -640,8 +638,6 @@ function matchedTiles() {
   }
 
   //now let's call the functions that actually reflect reduced health on health bars:
-  // reduceHealthOfComputer(threeRedMatch()); - should be able to eliminate the threeRedMatch function
-
   reduceHealthOfComputer(reduceComputerHealth);
   reduceHealthOfPlayer(reducePlayerHealth);
 
@@ -695,15 +691,17 @@ function fillInMatchedTiles() {
 }
 
 function playGame() {
-  //need to check if there is a winner. If winner, go to gameOver() function
-  //otherwise, proceed to call the functions below
-  // if (remainingHealthPlayer < 1 || remainingHealthComputer < 1) {
-  //   gameOver();
-  // }
-  // else {
+
   makeMovePlayer();
-  makeMoveComputer();
-  // }
+  recreateBoard();
+
+  setTimeout(function() {
+    matchedTiles();
+    makeMoveComputer();
+    recreateBoard();
+    matchedTiles();
+  }, 2000);
+
 }
 
 //ends the game and announces the winner:
@@ -720,21 +718,6 @@ function gameOver() {
   }
 }
 
-// var remainingHealthComputer = 0;
-// var remainingHealthPlayer = 0;
-
-//function tileSwap() {
-//function playGame() {
-    // swap color values in tileArray:
-    // var temp = tileArray[player.move[0]];
-    // tileArray[player.move[0]] = tileArray[player.move[1]];
-    // tileArray[player.move[1]] = temp;
-    // display the swapped tiles on the board:
-    //recreateBoard();
-    // returns true - should eliminate if not using return value:
-    //makeMoveComputer();
-
-//}
 
 //set up game:
 populateBoard();
@@ -744,7 +727,7 @@ while (checkBoard()) {
 }
 
 gameInitialize();
-makeMovePlayer();
+//makeMovePlayer();
 //initializes computer and player health bars:
 healthBarComp();
 healthBarPlay();
