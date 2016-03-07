@@ -77,30 +77,37 @@
 
 .tile:hover {
     border: 1px solid red;
+    cursor: pointer;
 }
 
 .red,.R {
   background-color: tomato;
+  color: tomato;
 }
 
 .blue,.B {
   background-color: skyblue;
+  color: skyblue;
 }
 
 .green,.G {
   background-color: mediumseagreen;
+  color: mediumseagreen;
 }
 
 .yellow,.Y {
   background-color: khaki;
+  color: khaki;
 }
 
 .purple,.P {
   background-color: slateblue;
+  color: slateblue;
 }
 
 .orange,.O {
   background-color: orange;
+  color: orange;
 }
 
 /*.computerColor {

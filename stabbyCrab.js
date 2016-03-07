@@ -438,14 +438,9 @@ function resetBoard() {
 //re-create board based on current tileArray:
 // when calling this function, make sure tileArray is current!
 function recreateBoard() {
-  //var tileSpanArray = gameBoard.querySelectorAll('.tile');
-  // for (var k = 0; k < tileArray.length; k +=1) {
-  //   gameBoard.removeChild(tileSpanArray[k]);
-  // }
   gameBoard.innerHTML = '';
 
   for (var j = 0; j < tileArray.length; j +=1) {
-    //tileSpanArray[j].innerText = tileArray[j];
     var tileSpan = document.createElement('span');
     tileSpan.innerText = tileArray[j];
     activateTile(tileSpan, j);
@@ -624,8 +619,6 @@ function matchedTiles() {
     }
   }
 
-  console.log("matchedTilesIndArray: " + matchedTilesIndArray);
-  console.log("matchedTilesLettersArray: " + matchedTilesLettersArray);
   //now loop over the matchedTilesIndArray and for every red tile reduce Computer's health
   //and for every blue tile reduce player's health:
   for (var letter of matchedTilesLettersArray) {
@@ -699,7 +692,11 @@ function playGame() {
     matchedTiles();
     makeMoveComputer();
     recreateBoard();
-    matchedTiles();
+
+    setTimeout(function() {
+      matchedTiles();
+    }, 2000);
+
   }, 2000);
 
 }
