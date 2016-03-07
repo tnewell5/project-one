@@ -1,8 +1,8 @@
 ## Stabby Crab Adventures
-#### Tanya Newell - proud owner of my ver first game!
+#### Tanya Newell - proud owner of my very first game!
 
 ### Game Rules:
-This is a one player game where you play against the computer.  During your turn, you get to match the same color tiles horizontally or vertically. If you match up red tiles, your opponent's health is reduced by the amount of matched up tiles since your opponent's health bar is red. The computer will also match tiles and will reduce your health whenever it matches up blue tiles since your health bar is blue. Matching up any other colors won't cause any damage. You can only match up adjacent tiles and you do so by clicking on both tiles that you would like to swap. You win the game by completely destroying your opponent (reducing their health to zero).
+This is a one player game where you play against the computer.  During your turn, you get to match the same color tiles horizontally or vertically. If you match up red tiles, your opponent's (computer's) health is reduced by the amount of matched up tiles since your opponent's health bar is red. The computer will also match tiles and will reduce your health whenever it matches up blue tiles since your health bar is blue. Matching up any other colors won't cause any damage. You can only match up adjacent tiles and you do so by clicking on both tiles that you would like to swap. You win the game by completely destroying your opponent (reducing their health to zero).
 
 ##### Game was build using Javascript, HTML, and CSS.  
 
