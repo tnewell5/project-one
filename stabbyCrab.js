@@ -132,6 +132,14 @@ function makeMoveComputer() {
       tileArray[computer.move[1]] = temp;
       matchedTiles();
 
+      if (remainingHealthPlayer < 1 || remainingHealthComputer < 1) {
+        gameOver();
+      }
+      else {
+        message.innerText = "Player - make your move!";
+        // resets computer move (global object):
+        computer.move = [];
+      }
       return true;
     }
     //can swap right?
@@ -145,6 +153,14 @@ function makeMoveComputer() {
       tileArray[computer.move[1]] = temp;
       matchedTiles();
 
+      if (remainingHealthPlayer < 1 || remainingHealthComputer < 1) {
+        gameOver();
+      }
+      else {
+        message.innerText = "Player - make your move!";
+        // resets computer move (global object):
+        computer.move = [];
+      }
       return true;
     }
     //can swap down?
@@ -157,6 +173,15 @@ function makeMoveComputer() {
       tileArray[computer.move[0]] = tileArray[computer.move[1]];
       tileArray[computer.move[1]] = temp;
       matchedTiles();
+
+      if (remainingHealthPlayer < 1 || remainingHealthComputer < 1) {
+        gameOver();
+      }
+      else {
+        message.innerText = "Player - make your move!";
+        // resets computer move (global object):
+        computer.move = [];
+      }
 
       return true;
     }
@@ -171,35 +196,72 @@ function makeMoveComputer() {
       tileArray[computer.move[1]] = temp;
       matchedTiles();
 
+      if (remainingHealthPlayer < 1 || remainingHealthComputer < 1) {
+        gameOver();
+      }
+      else {
+        message.innerText = "Player - make your move!";
+        // resets computer move (global object):
+        computer.move = [];
+      }
       return true;
     }
+}
 
+  console.log("computer moved a non-blue tile");
+  //swap any tiles that would result in a valid move:
+  for (var m = 0; m < tileArray; m +=1) {
+    if (isValidMove(tileArray[m], tileArray[m-10])) {
+      console.log("swapped random tile up");
+      // swap tiles
+      computer.move[0] = m;
+      computer.move[1] = m-10;
+      var temp = tileArray[m];
+      tileArray[m] = tileArray[m-10];
+      tileArray[m-10] = temp;
+      matchedTiles();
+    }
+    else if (isValidMove(tileArray[m], tileArray[m+1])) {
+      console.log("swapped random tile right");
+      // swap tiles
+      computer.move[0] = m;
+      computer.move[1] = m+1;
+      var temp = tileArray[m];
+      tileArray[m] = tileArray[m+1];
+      tileArray[m+1] = temp;
+    }
+    else if (isValidMove(tileArray[m], tileArray[m+10])) {
+      console.log("swapped random tile down");
+      // swap tiles
+      computer.move[0] = m;
+      computer.move[1] = m+10;
+      var temp = tileArray[m];
+      tileArray[m] = tileArray[m+10];
+      tileArray[m+10] = temp;
+    }
+    else if (isValidMove(tileArray[m], tileArray[m-1])) {
+      console.log("swapped random tile left");
+      // swap tiles
+      computer.move[0] = m;
+      computer.move[1] = m-1;
+      var temp = tileArray[m];
+      tileArray[m] = tileArray[m-1];
+      tileArray[m-1] = temp;
+    }
+    else {
+      console.log("computer ran out of possible moves");
+    }
+  }
+
+  if (remainingHealthPlayer < 1 || remainingHealthComputer < 1) {
+    gameOver();
+  }
+  else {
+    //console.log("computer ran out of possible moves");
+    message.innerText = "Player - make your move!";
     // resets computer move (global object):
     computer.move = [];
-    // else {
-    //   console.log("computer ran out of possible moves");
-    //   //swap any tiles that would result in a valid move:
-    //   for (var m = 0; m < tileArray; m +=1) {
-    //     if (isValidMove(tileArray[m], blueTiles[m]-10)) {
-    //       console.log("swapped random tile up");
-    //     }
-    //     else if (isValidMove(tileArray[m], blueTiles[m]+1)) {
-    //       console.log("swapped random tile right");
-    //     }
-    //     else if (isValidMove(tileArray[m], blueTiles[m]+10)) {
-    //       console.log("swapped random tile down");
-    //     }
-    //     else if (isValidMove(tileArray[m], blueTiles[m]-1)) {
-    //       console.log("swapped random tile left");
-    //     }
-    //     else {
-    //       console.log("computer ran out of possible moves");
-    //     }
-    //   }
-    // }
   }
-  console.log("computer ran out of possible moves");
-  message.innerText = "Player - make your move!";
   return true;
 }
 
@@ -633,10 +695,33 @@ function fillInMatchedTiles() {
 }
 
 function playGame() {
+  //need to check if there is a winner. If winner, go to gameOver() function
+  //otherwise, proceed to call the functions below
+  // if (remainingHealthPlayer < 1 || remainingHealthComputer < 1) {
+  //   gameOver();
+  // }
+  // else {
   makeMovePlayer();
   makeMoveComputer();
-
+  // }
 }
+
+//ends the game and announces the winner:
+function gameOver() {
+  console.log("game over!");
+
+  if (remainingHealthPlayer > remainingHealthComputer) {
+    console.log("Player is the winner!");
+    message.innerText = "Game Over - Player is the winner!";
+  }
+  else {
+    console.log("Computer is the winner!");
+    message.innerText = "Game Over - Computer is the winner!";
+  }
+}
+
+// var remainingHealthComputer = 0;
+// var remainingHealthPlayer = 0;
 
 //function tileSwap() {
 //function playGame() {
