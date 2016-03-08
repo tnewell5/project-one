@@ -1,3 +1,35 @@
+.container {
+  /*display: flex;*/
+}
+
+.side-box {
+  width: 400px;
+  /*float: right;*/
+  position: fixed;
+  left: 800px;
+}
+
+li {
+  list-style-type: none;
+  font-family: papyrus;
+  font-size: 20px;
+
+}
+
+.title {
+  color: black;
+  font-family: papyrus;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+p {
+  text-decoration: none;
+  color: black;
+  font-family: papyrus;
+  font-size: 18px;
+}
+
 .parent {
   display: flex;
   flex-direction: column;
