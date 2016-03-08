@@ -5,6 +5,7 @@
   /*height: 600px;
   width: 800px;*/
   /*background-color: lightgray;*/
+  /*font-family: fantasy;*/
 }
 
 .one {
@@ -56,6 +57,13 @@
 
 .crab {
   width: 100px;
+  animation: rotate 2s infinite;
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotateY(180deg);
+    }
 }
 
 .gameBoard {
@@ -118,8 +126,17 @@
   background-color: skyblue;
 }*/
 
+h2 {
+  font-family: papyrus;
+}
+
+h3 {
+  font-family: papyrus;
+}
+
 h4 {
-  margin: 5px;
+  margin: 1px;
+  font-family: papyrus;
 }
 
 .healthTileComputer {
@@ -134,4 +151,18 @@ h4 {
   height: 15px;
   width: 5px;
   display: inline-block;
+}
+
+.message {
+  animation: change 2s infinite;
+
+}
+
+@keyframes change {
+    100% {
+        /*transform: scale(20) skew(-20deg);*/
+        /*transform: skew(-20deg);*/
+        /*transform: skew(20deg);*/
+        transform: translate(10px, 10px);
+    }
 }
